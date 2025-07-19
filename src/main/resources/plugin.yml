@@ -1,0 +1,7 @@
+name: GetDown
+version: '1.0-SNAPSHOT'
+main: tv.logisch.game.GetDown
+api-version: '1.21'
+authors: [Teekqu]
+description: Minigame for Logisch.tv
+website: https://www.teekqu.de/
