@@ -1,7 +1,7 @@
 package tv.logisch.game.utils;
 
 import org.bukkit.entity.Player;
-import tv.logisch.oneBlockRace.OneBlockRace;
+import tv.logisch.game.GetDown;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
@@ -14,7 +14,7 @@ public class Velocity {
 
         try {
             out.write(message.getBytes());
-            player.sendPluginMessage(OneBlockRace.instance(), "logisch:actions", stream.toByteArray());
+            player.sendPluginMessage(GetDown.instance(), "logisch:actions", stream.toByteArray());
         } catch (Exception e) {
             e.printStackTrace();
         }
