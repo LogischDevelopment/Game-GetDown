@@ -5,6 +5,7 @@ public enum GameState {
     WAITING,
     STARTING,
     RUNNING,
+    FINISHED,
     SHOPPING,
     PVP,
     ENDED
