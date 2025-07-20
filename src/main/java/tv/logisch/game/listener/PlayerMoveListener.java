@@ -102,7 +102,9 @@ public class PlayerMoveListener implements Listener {
                 int max = 115;
                 int coins = (int) (Math.random() * (max - min + 1)) + min;
                 GameManager.get().playerCoinManager().addCoins(e.getPlayer(), coins);
-            } else if(block.getType().equals(Material.LAPIS_BLOCK)) {
+                e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§aDu hast §f" + coins + " §aCoins bekommen!"));
+                block.setType(Material.BLUE_CONCRETE);
+            } else if(block.getType().equals(Material.IRON_BLOCK)) {
                 ItemStack randomItem = ItemSetting.getRandomItem();
                 if(randomItem != null) {
                     e.getPlayer().getInventory().addItem(randomItem);
