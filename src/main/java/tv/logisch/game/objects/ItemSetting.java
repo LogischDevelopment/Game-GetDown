@@ -21,10 +21,14 @@ public class ItemSetting {
     public static ItemStack getRandomItem() {
         if(!isItemEnabled()) return null;
         GameItem itemSetting = items.get((int) (Math.random() * items.size()));
+        while (!itemSetting.enabled()) {
+            itemSetting = items.get((int) (Math.random() * items.size()));
+        }
         ItemStack stack = new ItemStack(itemSetting.material(), 1);
+        GameItem finalItemSetting = itemSetting;
         stack.editMeta(meta -> {
-            meta.displayName(Component.text(itemSetting.name()));
-            meta.lore(Arrays.stream(itemSetting.description.split("\n"))
+            meta.displayName(Component.text(finalItemSetting.name()));
+            meta.lore(Arrays.stream(finalItemSetting.description.split("\n"))
                 .map(Component::text)
                 .toList());
             if (meta instanceof CrossbowMeta crossbowMeta) {
