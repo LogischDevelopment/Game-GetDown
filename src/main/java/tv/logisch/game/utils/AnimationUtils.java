@@ -6,11 +6,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.TextColor;
 import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import tv.logisch.oneBlockRace.OneBlockRace;
-import tv.logisch.oneBlockRace.manager.GameManager;
+import tv.logisch.game.GetDown;
 
 public class AnimationUtils {
 
@@ -43,7 +40,7 @@ public class AnimationUtils {
                 }
             }
         };
-        animationTask.runTaskTimer(OneBlockRace.instance(), 0, 1);
+        animationTask.runTaskTimer(GetDown.instance(), 0, 1);
     }
 
     public static void stopAnimation() {
@@ -54,13 +51,7 @@ public class AnimationUtils {
     }
 
     public static void sendBossbar() {
-        long timeLeft = GameManager.get().timeLeft();
-        String text = Format.time(timeLeft);
-        Component animatedComponent = animateGradientComponent(text);
-
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            player.sendActionBar(animatedComponent);
-        }
+        // TODO: Implement
     }
 
     private static Component animateGradientComponent(String text) {
