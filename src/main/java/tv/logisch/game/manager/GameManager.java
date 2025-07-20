@@ -7,6 +7,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.TitlePart;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import tv.logisch.game.GetDown;
 import tv.logisch.game.enums.GameState;
 import tv.logisch.game.utils.Format;
@@ -137,6 +139,26 @@ public class GameManager {
             }
             seconds.decrementAndGet();
         }, 20L, 20L).getTaskId());
+    }
+
+    public void startPVP() {
+        Bukkit.getOnlinePlayers().forEach(p -> {
+            p.teleport(this.pvpWorld.getSpawnLocation());
+            p.sendMessage(GetDown.instance().prefix() + "Die §fPVP-Phase §7hat begonnen!");
+            p.playSound(p, Sound.ITEM_GOAT_HORN_SOUND_1, 1.0f, 1.0f);
+            p.setGameMode(GameMode.SURVIVAL);
+            p.setLevel(0);
+            p.setExp(0);
+            for (ItemStack content : p.getInventory().getContents()) {
+                if(content == null) continue;
+                if(content.getType().equals(Material.CHEST) || content.getType().equals(Material.ANVIL)) {
+                    if(content.getPersistentDataContainer().has(this.shopKey, PersistentDataType.STRING)) {
+                        content.setAmount(0);
+                    }
+                }
+            }
+        });
+        this.state = GameState.PVP;
     }
 
     public void stop(Player winner) {
