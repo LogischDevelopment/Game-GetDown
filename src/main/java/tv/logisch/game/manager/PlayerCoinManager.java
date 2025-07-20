@@ -30,6 +30,11 @@ public class PlayerCoinManager {
         }
     }
 
+    public void setCoins(Player player, int amount) {
+        if(amount < 0) amount = 0;
+        coins.put(player, amount);
+    }
+
     public int getCoins(Player player) {
         return coins.getOrDefault(player, 0);
     }
