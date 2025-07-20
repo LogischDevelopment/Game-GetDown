@@ -8,7 +8,11 @@ import org.bukkit.WorldCreator;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import tv.logisch.api.LogiAPI;
-import tv.logisch.game.listener.JoinListener;
+import tv.logisch.game.commands.Coins;
+import tv.logisch.game.commands.Start;
+import tv.logisch.game.gui.shop.ShopGUIListener;
+import tv.logisch.game.listener.*;
+import tv.logisch.game.manager.GameManager;
 import tv.logisch.game.objects.GameConfig;
 import tv.logisch.game.utils.Config;
 
@@ -50,14 +54,29 @@ public final class GetDown extends JavaPlugin {
         /* EVENT REGISTRATION */
         PluginManager pm = Bukkit.getPluginManager();
         pm.registerEvents(new JoinListener(), this);
+        pm.registerEvents(new QuitListener(), this);
+        pm.registerEvents(new BlockBreakListener(), this);
+        pm.registerEvents(new BlockPlaceListener(), this);
+        pm.registerEvents(new PlayerMoveListener(), this);
+        pm.registerEvents(new PlayerLoginListener(), this);
+        pm.registerEvents(new ShopGUIListener(), this);
+        pm.registerEvents(new PlayerInteractListener(), this);
+        pm.registerEvents(new PlayerDamageListener(), this);
+        pm.registerEvents(new TNTExplosionListener(), this);
+        pm.registerEvents(new ProjectileHitListener(), this);
+        pm.registerEvents(new EntityShootBowListener(), this);
 
         /* COMMAND REGISTRATION */
+        getCommand("start").setExecutor(new Start());
+        getCommand("coins").setExecutor(new Coins());
 
-        Bukkit.createWorld(new WorldCreator("waiting"));
+        GameManager.get().waitingWorld(Bukkit.createWorld(new WorldCreator("waiting")));
+        GameManager.get().pvpWorld(Bukkit.createWorld(new WorldCreator("world")));
         Bukkit.getWorlds().forEach(w -> {
             w.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
             w.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
             w.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
+            w.setGameRule(GameRule.RANDOM_TICK_SPEED, 0);
         });
 
     }
@@ -67,37 +86,5 @@ public final class GetDown extends JavaPlugin {
     public void onDisable() {
         getLogger().info("GetDown plugin has been disabled!");
     }
-
-
-    /**
-     *
-     * - PlayerMoveEvent -> on gold block -> add coins to player
-     * - PlayerMoveEvent -> on diamond block -> add bonus coins to player
-     * - PlayerMoveEvent -> on lapis block -> add random item to player (crossbow, bow)
-     * - PlayerMoveEvent -> on obsidian block -> replace obsidian to slime or do nothing (customizable chance)
-     * - PlayerMoveEvent -> on redstone block -> give random effect to player
-     * - Settings GUI for host
-     * - PlayerMoveEvent -> y <= 0 -> player finished
-     *
-     * ABLAUF:
-     * - Game state = WAITING
-     * - Player joins -> add to waiting world
-     *    - set game mode to adventure
-     * - host trigger start
-     *    - Game state = STARTING
-     *    - teleport all players to game world
-     *    - run countdown
-     *    - Game state = RUNNING
-     * - top 3 players get bonus coins
-     * - 3 players finished -> Game state = SHOPPING
-     * * - Shopping phase
-     *      - teleport players to waiting world
-     *      - open shop GUI for players
-     *      - start countdown (customizable)
-     *   - Game state = PVP
-     *   - teleport players to PVP world
-     *  - 1 player left -> Game state = END + end game
-     *
-     */
 
 }
