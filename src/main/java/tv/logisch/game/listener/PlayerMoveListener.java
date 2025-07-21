@@ -108,6 +108,7 @@ public class PlayerMoveListener implements Listener {
                 ItemStack randomItem = ItemSetting.getRandomItem();
                 if(randomItem != null) {
                     e.getPlayer().getInventory().addItem(randomItem);
+                    e.getPlayer().playSound(e.getPlayer(), Sound.BLOCK_NOTE_BLOCK_GUITAR, 1.0f, 1.0f);
                     e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§aDu hast ein Item erhalten: §f" + randomItem.getType().name()));
                 }
                 block.setType(Material.GRAY_CONCRETE);
@@ -124,6 +125,7 @@ public class PlayerMoveListener implements Listener {
                 if(effect != null) {
                     e.getPlayer().addPotionEffect(new PotionEffect(effect.type(), effect.duration() * 20, effect.amplifier()));
                     e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§aDu hast einen Effekt erhalten: §f" + effect.type().translationKey() + " §7(" + effect.duration() + " Sekunden, Stufe " + (effect.amplifier() + 1) + ")"));
+                    e.getPlayer().playSound(e.getPlayer(), Sound.BLOCK_NOTE_BLOCK_GUITAR, 1.0f, 1.0f);
                 }
                 block.setType(Material.CYAN_CONCRETE);
             }
