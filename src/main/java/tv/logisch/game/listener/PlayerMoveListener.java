@@ -18,6 +18,7 @@ import tv.logisch.game.manager.GameManager;
 import tv.logisch.game.objects.EffectSetting;
 import tv.logisch.game.objects.GameEffect;
 import tv.logisch.game.objects.ItemSetting;
+import tv.logisch.game.scoreboard.Scoreboard;
 
 import java.util.concurrent.atomic.AtomicInteger;
 

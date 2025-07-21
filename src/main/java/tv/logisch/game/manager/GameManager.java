@@ -9,8 +9,11 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import tv.logisch.game.GetDown;
 import tv.logisch.game.enums.GameState;
+import tv.logisch.game.scoreboard.Scoreboard;
 import tv.logisch.game.utils.Format;
 
 import java.util.ArrayList;
@@ -83,19 +86,34 @@ public class GameManager {
                 }
                 time--;
             }
+            this.state = GameState.RUNNING;
             Bukkit.getOnlinePlayers().forEach(p -> {
+                Scoreboard.scoreboards.add(new Scoreboard(p));
                 p.sendMessage(GetDown.instance().prefix() + "Das Spiel hat begonnen!");
                 p.playSound(p, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
                 p.setLevel(0);
                 p.setExp(0);
             });
-            this.state = GameState.RUNNING;
+            this.startScoreboardUpdater();
         });
+    }
+
+    public void startScoreboardUpdater() {
+        AtomicInteger taskId = new AtomicInteger(0);
+        taskId.set(Bukkit.getScheduler().runTaskTimer(GetDown.instance(), () -> {
+            if(this.state.equals(GameState.RUNNING)) {
+                Scoreboard.scoreboards.forEach(Scoreboard::update);
+            } else {
+                Bukkit.getScheduler().cancelTask(taskId.get());
+            }
+        }, 10L, 10L).getTaskId());
     }
 
     public void startShopping() {
         this.state = GameState.SHOPPING;
+        Scoreboard.scoreboards.forEach(Scoreboard::unregister);
         Bukkit.getOnlinePlayers().forEach(p -> {
+            p.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
             p.teleport(this.waitingWorld.getSpawnLocation());
             p.getInventory().clear();
             p.setGameMode(GameMode.ADVENTURE);

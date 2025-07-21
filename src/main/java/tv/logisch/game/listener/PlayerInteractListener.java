@@ -1,15 +1,12 @@
 package tv.logisch.game.listener;
 
-import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.MenuType;
+import org.bukkit.inventory.view.AnvilView;
 import org.bukkit.persistence.PersistentDataType;
-import tv.logisch.game.GetDown;
 import tv.logisch.game.gui.shop.WeaponGUI;
 import tv.logisch.game.manager.GameManager;
 
@@ -29,8 +26,8 @@ public class PlayerInteractListener implements Listener {
             return;
         }
         if(s.equalsIgnoreCase("anvil")) {
-            Inventory inv = Bukkit.createInventory(e.getPlayer(), InventoryType.ANVIL, Component.text(GetDown.instance().prefix() + "Anvil"));
-            e.getPlayer().openInventory(inv);
+            AnvilView anvilView = MenuType.ANVIL.create(e.getPlayer());
+            e.getPlayer().openInventory(anvilView);
             return;
         }
 

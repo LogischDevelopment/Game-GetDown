@@ -10,6 +10,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import tv.logisch.game.GetDown;
 import tv.logisch.game.enums.GameState;
 import tv.logisch.game.manager.GameManager;
+import tv.logisch.game.scoreboard.Scoreboard;
 
 public class JoinListener implements Listener {
 
@@ -26,6 +27,8 @@ public class JoinListener implements Listener {
         if(state.equals(GameState.RUNNING)) {
             p.teleport(GameManager.get().gameWorld().getSpawnLocation());
             p.setGameMode(GameMode.SURVIVAL);
+            Scoreboard.scoreboards.removeIf(pl -> pl.getPlayer().getUniqueId().equals(p.getUniqueId()));
+            Scoreboard.scoreboards.add(new Scoreboard(p));
             return;
         }
         if(state.equals(GameState.STARTING) || state.equals(GameState.SHOPPING) || state.equals(GameState.PVP) || state.equals(GameState.ENDED)) {
