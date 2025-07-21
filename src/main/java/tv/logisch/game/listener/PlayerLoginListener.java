@@ -14,7 +14,7 @@ public class PlayerLoginListener implements Listener {
 
         GameState state = GameManager.get().state();
 
-        if(state.equals(GameState.SHOPPING) || state.equals(GameState.PVP) || state.equals(GameState.ENDED)) {
+        if(state.equals(GameState.STARTING) || state.equals(GameState.SHOPPING) || state.equals(GameState.PVP) || state.equals(GameState.ENDED)) {
             e.disallow(PlayerLoginEvent.Result.KICK_OTHER, Component.text("§cThe game is already in progress!"));
         }
 

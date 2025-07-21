@@ -15,6 +15,14 @@ public class ItemSetting {
 
     public static final List<GameItem> items = List.of(
             new GameItem(Material.CROSSBOW, "Crossbow", "", true),
+            new GameItem(Material.CROSSBOW, "Crossbow", "", true),
+            new GameItem(Material.CROSSBOW, "Crossbow", "", true),
+            new GameItem(Material.CROSSBOW, "Crossbow", "", true),
+            new GameItem(Material.CROSSBOW, "Crossbow", "", true),
+            new GameItem(Material.CROSSBOW, "Crossbow", "", true),
+            new GameItem(Material.CROSSBOW, "Crossbow", "", true),
+            new GameItem(Material.CROSSBOW, "Crossbow", "", true),
+            new GameItem(Material.CROSSBOW, "Crossbow", "", true),
             new GameItem(Material.TRIDENT, "Trident", "", true)
     );
 

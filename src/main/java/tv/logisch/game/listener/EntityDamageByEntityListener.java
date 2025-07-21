@@ -53,26 +53,26 @@ public class EntityDamageByEntityListener implements Listener {
             p.setVelocity(direction.multiply(knockbackStrength));
             p.sendMessage(Component.text(GetDown.instance().prefix()+"Du wurdest von einem Knockback Arrow getroffen!"));
         } else if(type.equalsIgnoreCase("damage_arrow_1")) {
-            e.setDamage(1.0);
-            p.sendMessage(Component.text(GetDown.instance().prefix()+"Du wurdest von einem Damage Arrow getroffen! §8(§c-1 Herz§8)"));
+            e.setDamage(6.0);
+            p.sendMessage(Component.text(GetDown.instance().prefix()+"Du wurdest von einem Damage Arrow getroffen! §8(§c-3 Herz§8)"));
         } else if(type.equalsIgnoreCase("damage_arrow_2")) {
-            e.setDamage(2.0);
-            p.sendMessage(Component.text(GetDown.instance().prefix()+"Du wurdest von einem Damage Arrow getroffen! §8(§c-2 Herzen§8)"));
+            e.setDamage(8.0);
+            p.sendMessage(Component.text(GetDown.instance().prefix()+"Du wurdest von einem Damage Arrow getroffen! §8(§c-4 Herzen§8)"));
         } else if(type.equalsIgnoreCase("damage_arrow_3")) {
-            e.setDamage(3.0);
-            p.sendMessage(Component.text(GetDown.instance().prefix()+"Du wurdest von einem Damage Arrow getroffen! §8(§c-3 Herzen§8)"));
+            e.setDamage(10.0);
+            p.sendMessage(Component.text(GetDown.instance().prefix()+"Du wurdest von einem Damage Arrow getroffen! §8(§c-5 Herzen§8)"));
         } else if(type.equalsIgnoreCase("levitation_arrow")) {
             p.addPotionEffect(new PotionEffect(PotionEffectType.LEVITATION, 5*20, 1));
             p.sendMessage(Component.text(GetDown.instance().prefix()+"Du wurdest von einem Levitation Arrow getroffen! §8(§c5 Sekunden Levitation§8)"));
         } else if(type.equalsIgnoreCase("poison_arrow")) {
-            p.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 5*20, 1));
-            p.sendMessage(Component.text(GetDown.instance().prefix()+"Du wurdest von einem Poison Arrow getroffen! §8(§c5 Sekunden Gift§8)"));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.POISON, 8*20, 1));
+            p.sendMessage(Component.text(GetDown.instance().prefix()+"Du wurdest von einem Poison Arrow getroffen! §8(§c8 Sekunden Gift§8)"));
         } else if(type.equalsIgnoreCase("fire_arrow")) {
-            p.setFireTicks(5 * 20);
-            p.sendMessage(Component.text(GetDown.instance().prefix()+"Du wurdest von einem Fire Arrow getroffen! §8(§c5 Sekunden Feuer§8)"));
+            p.setFireTicks(12 * 20);
+            p.sendMessage(Component.text(GetDown.instance().prefix()+"Du wurdest von einem Fire Arrow getroffen! §8(§c12 Sekunden Feuer§8)"));
         } else if(type.equalsIgnoreCase("blindness_arrow")) {
-            p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 5*20, 1));
-            p.sendMessage(Component.text(GetDown.instance().prefix()+"Du wurdest von einem Blindness Arrow getroffen! §8(§c5 Sekunden Blindheit§8)"));
+            p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 8*20, 1));
+            p.sendMessage(Component.text(GetDown.instance().prefix()+"Du wurdest von einem Blindness Arrow getroffen! §8(§c8 Sekunden Blindheit§8)"));
         }
 
     }

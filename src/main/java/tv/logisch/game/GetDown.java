@@ -65,6 +65,9 @@ public final class GetDown extends JavaPlugin {
         pm.registerEvents(new TNTExplosionListener(), this);
         pm.registerEvents(new ProjectileHitListener(), this);
         pm.registerEvents(new EntityShootBowListener(), this);
+        pm.registerEvents(new EntityDamageByEntityListener(), this);
+        pm.registerEvents(new PlayerDropListener(), this);
+        pm.registerEvents(new PlayerFoodLevelChangeListener(), this);
 
         /* COMMAND REGISTRATION */
         getCommand("start").setExecutor(new Start());
@@ -82,7 +85,6 @@ public final class GetDown extends JavaPlugin {
     }
 
     @Override
-
     public void onDisable() {
         getLogger().info("GetDown plugin has been disabled!");
     }

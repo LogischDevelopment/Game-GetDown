@@ -50,7 +50,7 @@ public class GameManager {
         this.state = GameState.WAITING;
         this.playerCoinManager = new PlayerCoinManager();
         this.shoppingTime = 120;
-        this.percentage = 30;
+        this.percentage = 20;
         this.worldName = "getdown";
         this.playersFinished = new ArrayList<>();
     }

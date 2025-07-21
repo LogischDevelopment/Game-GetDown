@@ -6,6 +6,7 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
@@ -67,15 +68,19 @@ public class ShopGUIListener implements Listener {
 
         if(action.equalsIgnoreCase("open_weapons")) {
             WeaponGUI.get(p).open();
+            p.playSound(p, Sound.BLOCK_NOTE_BLOCK_HAT, 1.0f, 1.0f);
             return;
         } else if(action.equalsIgnoreCase("open_armor")) {
             ArmorGUI.get(p).open();
+            p.playSound(p, Sound.BLOCK_NOTE_BLOCK_HAT, 1.0f, 1.0f);
             return;
         } else if(action.equalsIgnoreCase("open_utilities")) {
             UtilityGUI.get(p).open();
+            p.playSound(p, Sound.BLOCK_NOTE_BLOCK_HAT, 1.0f, 1.0f);
             return;
         } else if(action.equalsIgnoreCase("open_enchantments")) {
             EnchantingGUI.get(p).open();
+            p.playSound(p, Sound.BLOCK_NOTE_BLOCK_HAT, 1.0f, 1.0f);
             return;
         }
 
@@ -91,6 +96,7 @@ public class ShopGUIListener implements Listener {
             p.getInventory().addItem(item);
             Component name = item.getItemMeta().displayName();
             p.sendMessage(GetDown.instance().prefix() + "§aYou have bought " + item.getAmount() + "x " + (name == null ? "Unknown" : PlainTextComponentSerializer.plainText().serialize(name)) + " for §e" + cost + " coins§a.");
+            p.playSound(p, Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 1.0f);
             return;
         }
     }
@@ -128,6 +134,8 @@ public class ShopGUIListener implements Listener {
             } else {
                 e.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.POISON, 30*20, 1));
             }
+        } else if(item.getType().equals(Material.GOLDEN_CARROT)) {
+            e.setCancelled(true);
         }
 
     }

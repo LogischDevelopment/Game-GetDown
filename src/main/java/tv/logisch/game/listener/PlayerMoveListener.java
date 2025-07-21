@@ -1,6 +1,7 @@
 package tv.logisch.game.listener;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.title.TitlePart;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -24,7 +25,7 @@ public class PlayerMoveListener implements Listener {
 
     @EventHandler
     public void onPlayerMove(PlayerMoveEvent e) {
-        if(e.getFrom().getBlockX() == e.getTo().getBlockX() && e.getFrom().getBlockY() == e.getTo().getBlockY() && e.getFrom().getBlockZ() == e.getTo().getBlockZ()) {
+        if(e.getFrom().getX() == e.getTo().getX() && e.getFrom().getY() == e.getTo().getY() && e.getFrom().getZ() == e.getTo().getBlockZ()) {
             return;
         }
 
@@ -51,10 +52,13 @@ public class PlayerMoveListener implements Listener {
                             int finishedCount = GameManager.get().playersFinished.size();
                             if(finishedCount == 1) {
                                 GameManager.get().playerCoinManager().addCoins(e.getPlayer(), 300);
+                                e.getPlayer().sendTitlePart(TitlePart.TITLE, Component.text("§6+300"));
                             } else if(finishedCount == 2) {
                                 GameManager.get().playerCoinManager().addCoins(e.getPlayer(), 200);
+                                e.getPlayer().sendTitlePart(TitlePart.TITLE, Component.text("§6+200"));
                             } else if(finishedCount == 3) {
                                 GameManager.get().playerCoinManager().addCoins(e.getPlayer(), 100);
+                                e.getPlayer().sendTitlePart(TitlePart.TITLE, Component.text("§6+100"));
                             }
 
                             Bukkit.getOnlinePlayers().forEach(p -> {
@@ -84,50 +88,109 @@ public class PlayerMoveListener implements Listener {
                             }
                         }
                     }
-                }, 20L);
+                }, 2L);
                 return;
             }
 
             Block block = e.getPlayer().getLocation().getBlock().getRelative(0, -1, 0);
+            Block block2 = e.getPlayer().getLocation().getBlock().getRelative(0, -2, 0);
+            Block block3 = e.getPlayer().getLocation().getBlock().getRelative(0, -3, 0);
+
+            if(block2.getType().equals(Material.OBSIDIAN)) {
+                Bukkit.getScheduler().runTaskLater(GetDown.instance(), () -> {
+                    if (!e.getPlayer().getLocation().getBlock().getRelative(0, -2, 0).equals(block2)) return;
+                    if (Math.random() * 100 < GameManager.get().percentage()) {
+                        block2.setType(Material.SLIME_BLOCK);
+                        e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§aDu bist auf einen Slime Block gefallen!"));
+                        Bukkit.getScheduler().runTaskLater(GetDown.instance(), () -> {
+                            if (block2.getType().equals(Material.SLIME_BLOCK)) {
+                                block2.setType(Material.COBBLESTONE);
+                            }
+                        }, 5 * 20L);
+                    } else {
+                        block2.setType(Material.COBBLESTONE);
+                        e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§cDu bist auf einen normalen Block gefallen!"));
+                    }
+                }, 1L);
+            }
+            if(block3.getType().equals(Material.OBSIDIAN)) {
+                Bukkit.getScheduler().runTaskLater(GetDown.instance(), () -> {
+                    if (!e.getPlayer().getLocation().getBlock().getRelative(0, -2, 0).equals(block3)) return;
+                    if (Math.random() * 100 < GameManager.get().percentage()) {
+                        block3.setType(Material.SLIME_BLOCK);
+                        e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§aDu bist auf einen Slime Block gefallen!"));
+                        Bukkit.getScheduler().runTaskLater(GetDown.instance(), () -> {
+                            if (block3.getType().equals(Material.SLIME_BLOCK)) {
+                                block3.setType(Material.COBBLESTONE);
+                            }
+                        }, 5 * 20L);
+                    } else {
+                        block3.setType(Material.COBBLESTONE);
+                        e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§cDu bist auf einen normalen Block gefallen!"));
+                    }
+                }, 1L);
+            }
 
             if(block.getType().equals(Material.GOLD_BLOCK)) {
-                int min = 25;
-                int max = 55;
-                int coins = (int) (Math.random() * (max - min + 1)) + min;
-                GameManager.get().playerCoinManager().addCoins(e.getPlayer(), coins);
-                e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§aDu hast §f" + coins + " §aCoins bekommen!"));
-                block.setType(Material.YELLOW_CONCRETE);
+                Bukkit.getScheduler().runTaskLater(GetDown.instance(), () -> {
+                    if (!e.getPlayer().getLocation().getBlock().getRelative(0, -1, 0).equals(block)) return;
+                    int min = 25;
+                    int max = 55;
+                    int coins = (int) (Math.random() * (max - min + 1)) + min;
+                    GameManager.get().playerCoinManager().addCoins(e.getPlayer(), coins);
+                    e.getPlayer().playSound(e.getPlayer(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1.0f, 1.0f);
+                    e.getPlayer().sendTitlePart(TitlePart.TITLE, Component.text("§6+" + coins));
+                    block.setType(Material.YELLOW_CONCRETE);
+                }, 1);
             } else if(block.getType().equals(Material.DIAMOND_BLOCK)) {
-                int min = 75;
-                int max = 115;
-                int coins = (int) (Math.random() * (max - min + 1)) + min;
-                GameManager.get().playerCoinManager().addCoins(e.getPlayer(), coins);
-                e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§aDu hast §f" + coins + " §aCoins bekommen!"));
-                block.setType(Material.BLUE_CONCRETE);
+                Bukkit.getScheduler().runTaskLater(GetDown.instance(), () -> {
+                    if (!e.getPlayer().getLocation().getBlock().getRelative(0, -1, 0).equals(block)) return;
+                    int min = 75;
+                    int max = 115;
+                    int coins = (int) (Math.random() * (max - min + 1)) + min;
+                    GameManager.get().playerCoinManager().addCoins(e.getPlayer(), coins);
+                    e.getPlayer().sendTitlePart(TitlePart.TITLE, Component.text("§a+" + coins));
+                    e.getPlayer().playSound(e.getPlayer(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1.0f, 1.0f);
+                    block.setType(Material.LIGHT_BLUE_CONCRETE);
+                }, 1L);
             } else if(block.getType().equals(Material.IRON_BLOCK)) {
-                ItemStack randomItem = ItemSetting.getRandomItem();
-                if(randomItem != null) {
-                    e.getPlayer().getInventory().addItem(randomItem);
-                    e.getPlayer().playSound(e.getPlayer(), Sound.BLOCK_NOTE_BLOCK_GUITAR, 1.0f, 1.0f);
-                    e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§aDu hast ein Item erhalten: §f" + randomItem.getType().name()));
-                }
-                block.setType(Material.GRAY_CONCRETE);
+                Bukkit.getScheduler().runTaskLater(GetDown.instance(), () -> {
+                    if (!e.getPlayer().getLocation().getBlock().getRelative(0, -1, 0).equals(block)) return;
+                    ItemStack randomItem = ItemSetting.getRandomItem();
+                    if (randomItem != null) {
+                        e.getPlayer().getInventory().addItem(randomItem);
+                        e.getPlayer().playSound(e.getPlayer(), Sound.BLOCK_NOTE_BLOCK_GUITAR, 1.0f, 1.0f);
+                        e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§aDu hast ein Item erhalten: §f" + randomItem.getType().name()));
+                    }
+                    block.setType(Material.GRAY_CONCRETE);
+                }, 1L);
             } else if(block.getType().equals(Material.OBSIDIAN)) {
-                if(Math.random() * 100 < GameManager.get().percentage()) {
-                    block.setType(Material.SLIME_BLOCK);
-                    e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§aDu bist auf einen Slime Block gefallen!"));
-                } else {
-                    block.setType(Material.COBBLESTONE);
-                    e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§cDu bist auf einen normalen Block gefallen!"));
-                }
+                Bukkit.getScheduler().runTaskLater(GetDown.instance(), () -> {
+                    if (!e.getPlayer().getLocation().getBlock().getRelative(0, -1, 0).equals(block)) return;
+                    if (Math.random() * 100 < GameManager.get().percentage()) {
+                        block.setType(Material.SLIME_BLOCK);
+                        e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§aDu bist auf einen Slime Block gefallen!"));
+                        Bukkit.getScheduler().runTaskLater(GetDown.instance(), () -> {
+                            if (block.getType().equals(Material.SLIME_BLOCK)) {
+                                block.setType(Material.COBBLESTONE);
+                            }
+                        }, 5 * 20L);
+                    } else {
+                        block.setType(Material.COBBLESTONE);
+                        e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§cDu bist auf einen normalen Block gefallen!"));
+                    }
+                }, 1L);
             } else if(block.getType().equals(Material.LAPIS_BLOCK)) {
-                GameEffect effect = EffectSetting.getRandomEffect();
-                if(effect != null) {
-                    e.getPlayer().addPotionEffect(new PotionEffect(effect.type(), effect.duration() * 20, effect.amplifier()));
-                    e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§aDu hast einen Effekt erhalten: §f" + effect.type().translationKey() + " §7(" + effect.duration() + " Sekunden, Stufe " + (effect.amplifier() + 1) + ")"));
-                    e.getPlayer().playSound(e.getPlayer(), Sound.BLOCK_NOTE_BLOCK_GUITAR, 1.0f, 1.0f);
-                }
-                block.setType(Material.CYAN_CONCRETE);
+                Bukkit.getScheduler().runTaskLater(GetDown.instance(), () -> {
+                    if (!e.getPlayer().getLocation().getBlock().getRelative(0, -1, 0).equals(block)) return;
+                    GameEffect effect = EffectSetting.getRandomEffect();
+                    if (effect != null) {
+                        e.getPlayer().addPotionEffect(new PotionEffect(effect.type(), effect.duration() * 20, effect.amplifier()));
+                        e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§aDu hast einen Effekt erhalten: §f" + effect.type().translationKey() + " §7(" + effect.duration() + " Sekunden, Stufe " + (effect.amplifier() + 1) + ")"));
+                        e.getPlayer().playSound(e.getPlayer(), Sound.BLOCK_NOTE_BLOCK_GUITAR, 1.0f, 1.0f);
+                    }
+                    block.setType(Material.CYAN_CONCRETE);
+                }, 1L);
             }
 
         }

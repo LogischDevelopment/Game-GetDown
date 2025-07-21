@@ -30,6 +30,12 @@ public class BlockPlaceListener implements Listener {
             tnt.setFuseTicks(80); // 4 seconds
             return;
         }
+        if(e.getBlockPlaced().getType().equals(Material.COBWEB)) {
+            Bukkit.getScheduler().runTaskLater(GetDown.instance(), () -> {
+                e.getBlockPlaced().setType(Material.AIR);
+            }, 16*20L);
+            return;
+        }
         e.setCancelled(true);
     }
 

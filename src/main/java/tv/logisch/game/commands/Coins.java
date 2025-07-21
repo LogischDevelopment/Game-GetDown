@@ -48,7 +48,7 @@ public class Coins implements CommandExecutor {
             }
             try {
                 int coins = Integer.parseInt(args[1]);
-                GameManager.get().playerCoinManager().addCoins(target, coins);
+                GameManager.get().playerCoinManager().setCoins(target, coins);
                 p.sendMessage(GetDown.instance().prefix() + "§f" + target.getName() + " §7hat nun §f" + coins + " §7Coins.");
                 return true;
             } catch (NumberFormatException e) {

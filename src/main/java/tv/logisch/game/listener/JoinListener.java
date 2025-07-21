@@ -23,18 +23,12 @@ public class JoinListener implements Listener {
             p.setGameMode(GameMode.ADVENTURE);
             return;
         }
-        if(state.equals(GameState.STARTING)) {
-            p.teleport(GameManager.get().waitingWorld().getSpawnLocation());
-            p.getInventory().clear();
-            p.setGameMode(GameMode.ADVENTURE);
-            return;
-        }
         if(state.equals(GameState.RUNNING)) {
             p.teleport(GameManager.get().gameWorld().getSpawnLocation());
             p.setGameMode(GameMode.SURVIVAL);
             return;
         }
-        if(state.equals(GameState.SHOPPING) || state.equals(GameState.PVP) || state.equals(GameState.ENDED)) {
+        if(state.equals(GameState.STARTING) || state.equals(GameState.SHOPPING) || state.equals(GameState.PVP) || state.equals(GameState.ENDED)) {
             p.kick(Component.text(GetDown.instance().prefix()+"§cThe game is already in progress!"));
             return;
         }
