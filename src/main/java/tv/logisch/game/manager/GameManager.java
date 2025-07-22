@@ -88,12 +88,12 @@ public class GameManager {
             }
             this.state = GameState.RUNNING;
             Bukkit.getOnlinePlayers().forEach(p -> {
-                Scoreboard.scoreboards.add(new Scoreboard(p));
                 p.sendMessage(GetDown.instance().prefix() + "Das Spiel hat begonnen!");
                 p.playSound(p, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
                 p.setLevel(0);
                 p.setExp(0);
             });
+            Scoreboard.scoreboards.forEach(Scoreboard::start);
             this.startScoreboardUpdater();
         });
     }
@@ -113,7 +113,6 @@ public class GameManager {
         this.state = GameState.SHOPPING;
         Scoreboard.scoreboards.forEach(Scoreboard::unregister);
         Bukkit.getOnlinePlayers().forEach(p -> {
-            p.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
             p.teleport(this.waitingWorld.getSpawnLocation());
             p.getInventory().clear();
             p.setGameMode(GameMode.ADVENTURE);
@@ -141,21 +140,20 @@ public class GameManager {
             });
             p.getInventory().setItem(7, stack);
         });
-        AtomicInteger seconds = new AtomicInteger(this.shoppingTime);
         AtomicInteger taskId = new AtomicInteger(0);
         taskId.set(Bukkit.getScheduler().runTaskTimer(GetDown.instance(), () -> {
-            if(seconds.get() <= 0) {
+            if(this.shoppingTime <= 0) {
                 Bukkit.getScheduler().cancelTask(taskId.get());
                 this.startPVP();
                 return;
             }
-            if(seconds.get() % 60 == 0 || seconds.get() == 30 || seconds.get() == 15 || seconds.get() == 10 || seconds.get() <= 5) {
+            if(this.shoppingTime % 60 == 0 || this.shoppingTime == 30 || this.shoppingTime == 15 || this.shoppingTime == 10 || this.shoppingTime <= 5) {
                 Bukkit.getOnlinePlayers().forEach(p -> {
-                    p.sendMessage(GetDown.instance().prefix() + "Die PVP-Phase beginnt in §f" + seconds.get() + " §7Sekunden!");
+                    p.sendMessage(GetDown.instance().prefix() + "Die PVP-Phase beginnt in §f" + this.shoppingTime + " §7Sekunden!");
                     p.playSound(p, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.0f);
                 });
             }
-            seconds.decrementAndGet();
+            this.shoppingTime--;
         }, 20L, 20L).getTaskId());
     }
 

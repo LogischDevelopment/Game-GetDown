@@ -1,6 +1,7 @@
 package tv.logisch.game.scoreboard;
 
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
@@ -8,15 +9,25 @@ import org.bukkit.scoreboard.Scoreboard;
 
 public abstract class ScoreboardManager {
     protected final Scoreboard scoreboard;
-    protected final Objective objective;
+    protected Objective objective;
 
-    protected final Player player;
+    public final Player player;
+    private final String displayName;
 
     public ScoreboardManager(Player player, String displayName) {
         this.player = player;
+        this.displayName = displayName;
 
-        this.scoreboard = player.getScoreboard();
+        this.scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+        player.setScoreboard(this.scoreboard);
+    }
 
+    public abstract void createScoreboard();
+
+    public abstract void update();
+
+
+    public void start() {
         Objective display = this.scoreboard.getObjective("logigd");
         if(display != null) {
             display.unregister();
@@ -28,20 +39,13 @@ public abstract class ScoreboardManager {
         createScoreboard();
     }
 
-    public abstract void createScoreboard();
-
-    public abstract void update();
-
     public void unregister() {
-        if(this.objective != null) {
-            this.objective.unregister();
-        }
-        if(this.scoreboard != null) {
-            for(Team team : this.scoreboard.getTeams()) {
-                team.unregister();
-            }
+        Objective obj = this.scoreboard.getObjective("logigd");
+        if(obj != null) {
+            obj.unregister();
         }
     }
+
 
     public void setDisplayName(String displayName) {
         this.objective.displayName(Component.text(displayName));

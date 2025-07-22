@@ -30,6 +30,10 @@ public class PlayerDamageListener implements Listener {
         }
 
         if(state.equals(GameState.RUNNING)) {
+            if(GameManager.get().playersFinished.contains(p)) {
+                e.setCancelled(true);
+                return;
+            }
             if(e.getCause() == EntityDamageEvent.DamageCause.VOID) {
                 e.setCancelled(true);
                 p.teleport(GameManager.get().gameWorld().getSpawnLocation());
@@ -38,47 +42,9 @@ public class PlayerDamageListener implements Listener {
             }
             if(e.getFinalDamage() >= p.getHealth()) {
 
-                ItemStack mainHand = p.getInventory().getItemInMainHand();
-                ItemStack offHand = p.getInventory().getItemInOffHand();
-
-                ItemStack totem = null;
-                boolean offhand = false;
-
-                if (mainHand.getType() == Material.TOTEM_OF_UNDYING) {
-                    totem = mainHand;
-                } else if (offHand.getType() == Material.TOTEM_OF_UNDYING) {
-                    totem = offHand;
-                    offhand = true;
-                }
-
-                if (totem != null) {
-                    // Totem verbrauchen & Effekte auslösen
-                    p.setFireTicks(0);
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 40, 1));
-                    p.addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION, 100, 1));
-                    p.getWorld().playSound(p.getLocation(), Sound.ITEM_TOTEM_USE, 1, 1);
-                    p.playEffect(EntityEffect.PROTECTED_FROM_DEATH);
-
-                    if (totem.getAmount() > 1) {
-                        totem.setAmount(totem.getAmount() - 1);
-                    } else {
-                        if (offhand) {
-                            p.getInventory().setItemInOffHand(null);
-                        } else {
-                            p.getInventory().setItemInMainHand(null);
-                        }
-                    }
-
-                    // Schaden blockieren (Tod verhindern)
-                    e.setCancelled(true);
-                    p.setHealth(1.0);
-                    return;
-                }
-
                 e.setCancelled(true);
                 p.setHealth(20.0);
                 p.getInventory().clear();
-                p.getInventory().setArmorContents(new ItemStack[0]);
                 p.getWorld().playSound(p.getLocation(), Sound.ENTITY_PLAYER_DEATH, 1.0f, 1.0f);
                 p.teleport(p.getWorld().getSpawnLocation());
                 int coins = GameManager.get().playerCoinManager().getCoins(p);
@@ -94,8 +60,46 @@ public class PlayerDamageListener implements Listener {
         if(state.equals(GameState.PVP)) {
 
             if(e.getFinalDamage() >= p.getHealth()) {
+                ItemStack mainHand = p.getInventory().getItemInMainHand();
+                ItemStack offHand = p.getInventory().getItemInOffHand();
+
+                ItemStack totem = null;
+                boolean offhand = false;
+
+                if (mainHand.getType().equals(Material.TOTEM_OF_UNDYING)) {
+                    totem = mainHand;
+                } else if (offHand.getType().equals(Material.TOTEM_OF_UNDYING)) {
+                    totem = offHand;
+                    offhand = true;
+                }
+
+                if (totem != null) {
+                    p.setFireTicks(0);
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 40, 1));
+                    p.getWorld().playSound(p.getLocation(), Sound.ITEM_TOTEM_USE, 1, 1);
+                    p.playEffect(EntityEffect.PROTECTED_FROM_DEATH);
+
+                    if (totem.getAmount() > 1) {
+                        totem.setAmount(totem.getAmount() - 1);
+                    } else {
+                        if (offhand) {
+                            p.getInventory().setItemInOffHand(null);
+                        } else {
+                            p.getInventory().setItemInMainHand(null);
+                        }
+                    }
+
+                    e.setCancelled(true);
+                    p.setHealth(20.0);
+                    return;
+                }
                 e.setCancelled(true);
                 p.setHealth(20.0);
+                p.getInventory().forEach(is -> {
+                    if(is == null || is.getType().equals(Material.AIR)) return;
+                    p.getWorld().dropItem(p.getLocation(), is);
+                });
+                p.getInventory().clear();
                 p.getWorld().playSound(p.getLocation(), Sound.ENTITY_PLAYER_DEATH, 1.0f, 1.0f);
                 p.setGameMode(GameMode.SPECTATOR);
                 AtomicInteger remaining = new AtomicInteger(0);

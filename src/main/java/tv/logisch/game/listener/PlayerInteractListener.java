@@ -1,9 +1,13 @@
 package tv.logisch.game.listener;
 
+import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.AnvilInventory;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.MenuType;
 import org.bukkit.inventory.view.AnvilView;
 import org.bukkit.persistence.PersistentDataType;
