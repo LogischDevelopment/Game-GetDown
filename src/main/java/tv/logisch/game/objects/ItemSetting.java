@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.CrossbowMeta;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,6 +26,17 @@ public class ItemSetting {
             new GameItem(Material.CROSSBOW, "Crossbow", "", true),
             new GameItem(Material.TRIDENT, "Trident", "", true)
     );
+
+    public static List<GameItem> items() {
+        List<GameItem> items = new ArrayList<>();
+        for(GameItem item : ItemSetting.items) {
+            GameItem gameItem = items.stream().filter(gi -> gi.name.equals(item.name)).findFirst().orElse(null);
+            if(gameItem == null) {
+                items.add(item);
+            }
+        }
+        return items;
+    }
 
     public static ItemStack getRandomItem() {
         if(!isItemEnabled()) return null;

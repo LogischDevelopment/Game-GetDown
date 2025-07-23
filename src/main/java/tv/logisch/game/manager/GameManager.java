@@ -46,6 +46,7 @@ public class GameManager {
     private int percentage;
 
     private NamespacedKey shopKey = new NamespacedKey("logisch_getdown", "shop");
+    private NamespacedKey settingKey = new NamespacedKey("logisch_getdown", "settings");
 
     public List<Player> playersFinished;
 
