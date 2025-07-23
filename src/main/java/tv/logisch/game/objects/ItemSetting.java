@@ -2,6 +2,7 @@ package tv.logisch.game.objects;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -63,6 +64,7 @@ public class ItemSetting {
     }
 
     @Getter
+    @Setter
     @Accessors(fluent = true)
     @AllArgsConstructor
     public static class GameItem {

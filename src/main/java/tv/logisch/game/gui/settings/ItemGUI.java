@@ -127,7 +127,7 @@ public class ItemGUI {
                         Component.text("§7Click to toggle this item."),
                         Component.text("§7Current state: " + (item.enabled() ? "§aEnabled" : "§cDisabled"))
                 ));
-                m.getPersistentDataContainer().set(GameManager.get().settingKey(), PersistentDataType.STRING, "toggle_item_" + item.material());
+                m.getPersistentDataContainer().set(GameManager.get().settingKey(), PersistentDataType.STRING, "toggle_item_" + item.name());
             });
             if(!fields.isEmpty()) {
                 this.inventory.setItem(fields.getFirst(), eItem);

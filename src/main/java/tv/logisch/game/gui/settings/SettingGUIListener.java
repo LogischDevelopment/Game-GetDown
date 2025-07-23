@@ -14,7 +14,12 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import tv.logisch.game.GetDown;
+import tv.logisch.game.enums.GameState;
 import tv.logisch.game.manager.GameManager;
+import tv.logisch.game.objects.ArrowSetting;
+import tv.logisch.game.objects.EffectSetting;
+import tv.logisch.game.objects.GameEffect;
+import tv.logisch.game.objects.ItemSetting;
 
 public class SettingGUIListener implements Listener {
 
@@ -70,15 +75,46 @@ public class SettingGUIListener implements Listener {
         }
 
         if(action.startsWith("toggle_effect_")) {
-            // TODO: Implement
+            String effectKey = action.replaceFirst("toggle_effect_", "");
+            GameEffect gE = EffectSetting.effects.stream().filter(gameEffect -> gameEffect.type().getKey().getKey().equalsIgnoreCase(effectKey)).findFirst().orElse(null);
+            if(gE == null) return;
+            gE.enabled(!gE.enabled());
+            EffectGUI.guis.forEach(EffectGUI::update);
+            return;
         } else if(action.startsWith("toggle_item_")) {
-            // TODO: Implement
+            String itemName = action.replaceFirst("toggle_item_", "");
+            ItemSetting.items.stream().filter(gameItem -> gameItem.name().equals(itemName)).forEach(gI -> gI.enabled(!gI.enabled()));
+            ItemGUI.guis.forEach(ItemGUI::update);
+            return;
         } else if(action.startsWith("toggle_arrow_")) {
-            // TODO: Implement
+            String arrowId = action.replaceFirst("toggle_arrow_", "");
+            ArrowSetting.arrows.stream().filter(gA -> gA.id().equals(arrowId)).forEach(gA -> gA.enabled(!gA.enabled()));
+            ItemGUI.guis.forEach(ItemGUI::update);
+            return;
         } else if(action.startsWith("add_time")) {
-            // TODO: Implement
+            if(!GameManager.get().state().equals(GameState.WAITING) && !GameManager.get().state().equals(GameState.STARTING) && !GameManager.get().state().equals(GameState.RUNNING)) {
+                return;
+            }
+            if(e.isShiftClick()) {
+                GameManager.get().shoppingTime(GameManager.get().shoppingTime()+30);
+            } else {
+                GameManager.get().shoppingTime(GameManager.get().shoppingTime()+10);
+            }
+            ShoppingGUI.guis.forEach(ShoppingGUI::update);
+            return;
         } else if(action.startsWith("remove_time")) {
-            // TODO: Implement
+            if(!GameManager.get().state().equals(GameState.WAITING) && !GameManager.get().state().equals(GameState.STARTING) && !GameManager.get().state().equals(GameState.RUNNING)) {
+                return;
+            }
+            if(e.isShiftClick()) {
+                if(GameManager.get().shoppingTime() <= 30) return;
+                GameManager.get().shoppingTime(GameManager.get().shoppingTime()-30);
+            } else {
+                if(GameManager.get().shoppingTime() <= 10) return;
+                GameManager.get().shoppingTime(GameManager.get().shoppingTime()-10);
+            }
+            ShoppingGUI.guis.forEach(ShoppingGUI::update);
+            return;
         }
     }
 

@@ -11,6 +11,7 @@ import tv.logisch.api.LogiAPI;
 import tv.logisch.game.commands.Coins;
 import tv.logisch.game.commands.Start;
 import tv.logisch.game.commands.Skip;
+import tv.logisch.game.gui.settings.SettingGUIListener;
 import tv.logisch.game.gui.shop.ShopGUIListener;
 import tv.logisch.game.listener.*;
 import tv.logisch.game.manager.GameManager;
@@ -69,6 +70,7 @@ public final class GetDown extends JavaPlugin {
         pm.registerEvents(new EntityDamageByEntityListener(), this);
         pm.registerEvents(new PlayerDropListener(), this);
         pm.registerEvents(new PlayerFoodLevelChangeListener(), this);
+        pm.registerEvents(new SettingGUIListener(), this);
 
         /* COMMAND REGISTRATION */
         getCommand("start").setExecutor(new Start());

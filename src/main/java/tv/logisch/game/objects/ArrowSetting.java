@@ -2,6 +2,7 @@ package tv.logisch.game.objects;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -45,6 +46,7 @@ public class ArrowSetting {
     }
 
     @Getter
+    @Setter
     @AllArgsConstructor
     @Accessors(fluent = true)
     public static class GameArrow {
