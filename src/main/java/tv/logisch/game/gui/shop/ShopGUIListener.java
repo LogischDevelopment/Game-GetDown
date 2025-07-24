@@ -92,7 +92,9 @@ public class ShopGUIListener implements Listener {
             }
             GameManager.get().playerCoinManager().removeCoins(p, cost);
             ItemStack item = clicked.clone();
-            item.getItemMeta().getPersistentDataContainer().remove(key);
+            item.editMeta(m -> {
+                m.getPersistentDataContainer().remove(key);
+            });
             p.getInventory().addItem(item);
             Component name = item.getItemMeta().displayName();
             p.sendMessage(GetDown.instance().prefix() + "§aYou have bought " + item.getAmount() + "x " + (name == null ? "Unknown" : PlainTextComponentSerializer.plainText().serialize(name)) + " for §e" + cost + " coins§a.");
