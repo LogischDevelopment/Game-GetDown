@@ -13,3 +13,5 @@ commands:
     description: Manage the coins of a player
   skip:
     description: Skip the shopping phase
+  settings:
+    description: Manage the settings of the GetDown minigame

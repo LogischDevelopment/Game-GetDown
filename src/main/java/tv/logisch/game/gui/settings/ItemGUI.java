@@ -71,9 +71,6 @@ public class ItemGUI {
         for(int i = 36; i < 45; i++) {
             this.inventory.setItem(i, placeholderStack);
         }
-        this.inventory.setItem(17, placeholderStack);
-        this.inventory.setItem(26, placeholderStack);
-        this.inventory.setItem(35, placeholderStack);
 
         /* CATEGORIES */
         ItemStack itemStack = new ItemStack(Material.POTION, 1);
@@ -109,7 +106,7 @@ public class ItemGUI {
             m.lore(List.of(
                     Component.text("§7Click to change the shopping time")
             ));
-            m.getPersistentDataContainer().set(GameManager.get().shopKey(), PersistentDataType.STRING, "open_shopping");
+            m.getPersistentDataContainer().set(GameManager.get().settingKey(), PersistentDataType.STRING, "open_shopping");
         });
         this.inventory.setItem(27, itemStack);
         this.inventory.setItem(28, placeholderStack);

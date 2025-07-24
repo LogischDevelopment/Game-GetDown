@@ -79,16 +79,19 @@ public class SettingGUIListener implements Listener {
             GameEffect gE = EffectSetting.effects.stream().filter(gameEffect -> gameEffect.type().getKey().getKey().equalsIgnoreCase(effectKey)).findFirst().orElse(null);
             if(gE == null) return;
             gE.enabled(!gE.enabled());
+            p.playSound(p, Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 1.0f);
             EffectGUI.guis.forEach(EffectGUI::update);
             return;
         } else if(action.startsWith("toggle_item_")) {
             String itemName = action.replaceFirst("toggle_item_", "");
             ItemSetting.items.stream().filter(gameItem -> gameItem.name().equals(itemName)).forEach(gI -> gI.enabled(!gI.enabled()));
+            p.playSound(p, Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 1.0f);
             ItemGUI.guis.forEach(ItemGUI::update);
             return;
         } else if(action.startsWith("toggle_arrow_")) {
             String arrowId = action.replaceFirst("toggle_arrow_", "");
             ArrowSetting.arrows.stream().filter(gA -> gA.id().equals(arrowId)).forEach(gA -> gA.enabled(!gA.enabled()));
+            p.playSound(p, Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 1.0f);
             ItemGUI.guis.forEach(ItemGUI::update);
             return;
         } else if(action.startsWith("add_time")) {
@@ -100,6 +103,7 @@ public class SettingGUIListener implements Listener {
             } else {
                 GameManager.get().shoppingTime(GameManager.get().shoppingTime()+10);
             }
+            p.playSound(p, Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 1.0f);
             ShoppingGUI.guis.forEach(ShoppingGUI::update);
             return;
         } else if(action.startsWith("remove_time")) {
@@ -113,6 +117,7 @@ public class SettingGUIListener implements Listener {
                 if(GameManager.get().shoppingTime() <= 10) return;
                 GameManager.get().shoppingTime(GameManager.get().shoppingTime()-10);
             }
+            p.playSound(p, Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 1.0f);
             ShoppingGUI.guis.forEach(ShoppingGUI::update);
             return;
         }

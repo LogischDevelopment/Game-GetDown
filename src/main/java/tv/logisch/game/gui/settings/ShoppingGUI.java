@@ -13,6 +13,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.potion.PotionType;
 import tv.logisch.game.GetDown;
 import tv.logisch.game.manager.GameManager;
+import tv.logisch.game.utils.Format;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,9 +69,6 @@ public class ShoppingGUI {
         for(int i = 36; i < 45; i++) {
             this.inventory.setItem(i, placeholderStack);
         }
-        this.inventory.setItem(17, placeholderStack);
-        this.inventory.setItem(26, placeholderStack);
-        this.inventory.setItem(35, placeholderStack);
 
         /* CATEGORIES */
         ItemStack itemStack = new ItemStack(Material.POTION, 1);
@@ -104,7 +102,7 @@ public class ShoppingGUI {
             m.lore(List.of(
                     Component.text("§7Click to change the shopping time")
             ));
-            m.getPersistentDataContainer().set(GameManager.get().shopKey(), PersistentDataType.STRING, "open_shopping");
+            m.getPersistentDataContainer().set(GameManager.get().settingKey(), PersistentDataType.STRING, "open_shopping");
         });
         this.inventory.setItem(27, itemStack);
         ItemStack activeCategory = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
@@ -113,9 +111,17 @@ public class ShoppingGUI {
 
 
         /* SETTINGS */
-        Integer addTime = 24;
-        Integer removeTime = 22;
-        var time = 0;
+        int addTime = 25;
+        int removeTime = 21;
+
+        ItemStack clock = new ItemStack(Material.CLOCK, 1);
+        clock.editMeta(m -> {
+            m.displayName(Component.text("§8» §f§l Shopping Time"));
+            m.lore(List.of(
+                    Component.text("§7Current time: §f" + Format.time(GameManager.get().shoppingTime()))
+            ));
+        });
+        this.inventory.setItem(23, clock);
 
         ItemStack addItem = new ItemStack(Material.GREEN_STAINED_GLASS_PANE, 1);
         addItem.editMeta(m -> {
@@ -123,9 +129,9 @@ public class ShoppingGUI {
             m.lore(List.of(
                     Component.text("§7Click to add 10 seconds to the shopping time."),
                     Component.text("§7Shift + Click to add 30 seconds."),
-                    Component.text("§7Current time: " + time + " seconds")
+                    Component.text("§7Current time: §f" + GameManager.get().shoppingTime() + " seconds")
             ));
-            m.getPersistentDataContainer().set(GameManager.get().shopKey(), PersistentDataType.STRING, "add_time");
+            m.getPersistentDataContainer().set(GameManager.get().settingKey(), PersistentDataType.STRING, "add_time");
         });
         this.inventory.setItem(addTime, addItem);
 
@@ -135,9 +141,9 @@ public class ShoppingGUI {
             m.lore(List.of(
                     Component.text("§7Click to remove 10 seconds to the shopping time."),
                     Component.text("§7Shift + Click to remove 30 seconds."),
-                    Component.text("§7Current time: " + time + " seconds")
+                    Component.text("§7Current time: §f" + GameManager.get().shoppingTime() + " seconds")
             ));
-            m.getPersistentDataContainer().set(GameManager.get().shopKey(), PersistentDataType.STRING, "remove_time");
+            m.getPersistentDataContainer().set(GameManager.get().settingKey(), PersistentDataType.STRING, "remove_time");
         });
         this.inventory.setItem(removeTime, removeItem);
 
