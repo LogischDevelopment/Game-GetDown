@@ -152,6 +152,11 @@ public class GameManager {
                 Bukkit.getOnlinePlayers().forEach(p -> {
                     p.sendMessage(GetDown.instance().prefix() + "Die PVP-Phase beginnt in §f" + this.shoppingTime + " §7Sekunden!");
                     p.playSound(p, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.0f);
+                    p.sendActionBar(Component.text(GetDown.instance().prefix()+"Current coins: §6"+this.playerCoinManager.getCoins(p)));
+                });
+            } else {
+                Bukkit.getOnlinePlayers().forEach(p -> {
+                    p.sendActionBar(Component.text(GetDown.instance().prefix()+"Current coins: §6"+this.playerCoinManager.getCoins(p)));
                 });
             }
             this.shoppingTime--;

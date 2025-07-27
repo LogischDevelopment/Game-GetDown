@@ -1,5 +1,7 @@
 package tv.logisch.game.manager;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.entity.Player;
 import org.w3c.dom.stylesheets.LinkStyle;
 
@@ -15,6 +17,7 @@ public class PlayerCoinManager {
 
     public void addCoins(Player player, int amount) {
         coins.put(player, coins.getOrDefault(player, 0) + amount);
+        this.displayPlayerCoins(player);
     }
 
     public void removeCoins(Player player, int amount) {
@@ -25,12 +28,14 @@ public class PlayerCoinManager {
             } else {
                 coins.put(player, 0); // Prevent negative coins
             }
+            this.displayPlayerCoins(player);
         }
     }
 
     public void setCoins(Player player, int amount) {
         if(amount < 0) amount = 0;
         coins.put(player, amount);
+        this.displayPlayerCoins(player);
     }
 
     public int getCoins(Player player) {
@@ -39,6 +44,7 @@ public class PlayerCoinManager {
 
     public void resetCoins(Player player) {
         coins.put(player, 0);
+        this.displayPlayerCoins(player);
     }
 
     public List<Player> getSortedPlayersByCoins() {
@@ -76,6 +82,16 @@ public class PlayerCoinManager {
         }
 
         return result;
+    }
+
+    public void displayPlayerCoins(Player player) {
+        int coins = this.getCoins(player);
+        String playerListName = PlainTextComponentSerializer.plainText().serialize(player.playerListName());
+        if (playerListName.contains(" §8[§6") && playerListName.contains("§8]")) {
+            playerListName = playerListName.substring(0, playerListName.indexOf(" §8[§6"));
+        }
+        String newPlayerListName = playerListName + " §8[§6" + coins + "§8]";
+        player.playerListName(Component.text(newPlayerListName));
     }
 
     public void clearAll() {
