@@ -80,7 +80,7 @@ public final class GetDown extends JavaPlugin {
         getCommand("settings").setExecutor(new Settings());
 
         GameManager.get().waitingWorld(Bukkit.createWorld(new WorldCreator("waiting")));
-        GameManager.get().pvpWorld(Bukkit.createWorld(new WorldCreator("world")));
+        GameManager.get().pvpWorld(Bukkit.createWorld(new WorldCreator("pvp")));
         Bukkit.getWorlds().forEach(w -> {
             w.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
             w.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);

@@ -99,6 +99,7 @@ public class ShopGUIListener implements Listener {
             Component name = item.getItemMeta().displayName();
             p.sendMessage(GetDown.instance().prefix() + "§aYou have bought " + item.getAmount() + "x " + (name == null ? "Unknown" : PlainTextComponentSerializer.plainText().serialize(name)) + " for §e" + cost + " coins§a.");
             p.playSound(p, Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 1.0f);
+            p.sendActionBar(Component.text(GetDown.instance().prefix()+"Current coins: §6"+GameManager.get().playerCoinManager().getCoins(p)));
             return;
         }
     }
@@ -111,7 +112,7 @@ public class ShopGUIListener implements Listener {
             Player player = e.getPlayer();
             AttributeInstance attribute = player.getAttribute(Attribute.SCALE);
             if (attribute == null) player.registerAttribute(Attribute.SCALE);
-            attribute.setBaseValue(0.75);
+            attribute.setBaseValue(0.8);
             return;
         }
         if(e.getOldItem().getType().equals(Material.TURTLE_HELMET)) {

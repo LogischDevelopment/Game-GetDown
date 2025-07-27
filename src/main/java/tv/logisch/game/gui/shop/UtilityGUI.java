@@ -190,9 +190,9 @@ public class UtilityGUI {
         this.inventory.setItem(35, item);
 
         // golden carrot with knockback 10
-        item = ShopUtils.createShopItem(Material.GOLDEN_CARROT, "§8» §f§lGolden Carrot", "§7Just a golden carrot with knockback 10.", 400);
+        item = ShopUtils.createShopItem(Material.GOLDEN_CARROT, "§8» §f§lGolden Carrot", "§7Just a golden carrot with knockback 5.", 400);
         item.editMeta(m -> {
-            m.addEnchant(Enchantment.KNOCKBACK, 10, true);
+            m.addEnchant(Enchantment.KNOCKBACK, 5, true);
         });
         this.inventory.setItem(44, item);
 
