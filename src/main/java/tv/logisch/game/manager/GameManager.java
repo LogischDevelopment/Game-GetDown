@@ -19,6 +19,7 @@ import tv.logisch.game.utils.Format;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
@@ -62,40 +63,56 @@ public class GameManager {
     public void start() {
         this.state = GameState.STARTING;
         this.gameWorld(Bukkit.createWorld(new WorldCreator(this.worldName)));
-
-        Bukkit.getOnlinePlayers().forEach(p -> {
-            p.teleport(this.gameWorld.getSpawnLocation());
-            p.getInventory().clear();
-            p.setGameMode(GameMode.SURVIVAL);
-        });
-        Bukkit.getScheduler().runTaskAsynchronously(GetDown.instance(), () -> {
-            int time = 15;
-            while (time > 0) {
-                int finalTime = time;
-                Bukkit.getOnlinePlayers().forEach(p -> {
-                    if(finalTime == 15 || finalTime == 10 || finalTime <= 5) {
-                        p.sendMessage(GetDown.instance().prefix() + "Das Spiel startet in §f"+finalTime+" §7Sekunden!");
-                        p.playSound(p, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.0f);
-                    }
-                    p.setLevel(finalTime);
-                    p.setExp((float) finalTime / 15);
-                });
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                time--;
-            }
-            this.state = GameState.RUNNING;
+        WorldManager wm = new WorldManager(this.worldName, new Location(this.gameWorld, -100, 0, -100), new Location(this.gameWorld, 100, 255, 100));
+        CompletableFuture<Boolean> booleanCompletableFuture = wm.replacePlaceholders(Material.RED_CONCRETE, List.of(
+                Material.FIRE_CORAL_BLOCK,
+                Material.RED_MUSHROOM_BLOCK,
+                Material.RED_GLAZED_TERRACOTTA,
+                Material.CRIMSON_NYLIUM,
+                Material.RED_WOOL,
+                Material.STRIPPED_MANGROVE_WOOD,
+                Material.MANGROVE_PLANKS,
+                Material.CRIMSON_HYPHAE,
+                Material.BLACKSTONE,
+                Material.CRACKED_DEEPSLATE_TILES,
+                Material.BASALT,
+                Material.NETHER_WART_BLOCK
+        ));
+        booleanCompletableFuture.thenAccept(success -> {
             Bukkit.getOnlinePlayers().forEach(p -> {
-                p.sendMessage(GetDown.instance().prefix() + "Das Spiel hat begonnen!");
-                p.playSound(p, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
-                p.setLevel(0);
-                p.setExp(0);
+                p.teleport(this.gameWorld.getSpawnLocation());
+                p.getInventory().clear();
+                p.setGameMode(GameMode.SURVIVAL);
             });
-            Scoreboard.scoreboards.forEach(Scoreboard::start);
-            this.startScoreboardUpdater();
+            Bukkit.getScheduler().runTaskAsynchronously(GetDown.instance(), () -> {
+                int time = 15;
+                while (time > 0) {
+                    int finalTime = time;
+                    Bukkit.getOnlinePlayers().forEach(p -> {
+                        if(finalTime == 15 || finalTime == 10 || finalTime <= 5) {
+                            p.sendMessage(GetDown.instance().prefix() + "Das Spiel startet in §f"+finalTime+" §7Sekunden!");
+                            p.playSound(p, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.0f);
+                        }
+                        p.setLevel(finalTime);
+                        p.setExp((float) finalTime / 15);
+                    });
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    time--;
+                }
+                this.state = GameState.RUNNING;
+                Bukkit.getOnlinePlayers().forEach(p -> {
+                    p.sendMessage(GetDown.instance().prefix() + "Das Spiel hat begonnen!");
+                    p.playSound(p, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
+                    p.setLevel(0);
+                    p.setExp(0);
+                });
+                Scoreboard.scoreboards.forEach(Scoreboard::start);
+                this.startScoreboardUpdater();
+            });
         });
     }
 
