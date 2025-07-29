@@ -45,6 +45,7 @@ public class PlayerDamageListener implements Listener {
                 e.setCancelled(true);
                 p.setHealth(20.0);
                 p.getInventory().clear();
+                p.getActivePotionEffects().clear();
                 p.getWorld().playSound(p.getLocation(), Sound.ENTITY_PLAYER_DEATH, 1.0f, 1.0f);
                 p.teleport(p.getWorld().getSpawnLocation());
                 int coins = GameManager.get().playerCoinManager().getCoins(p);
@@ -74,6 +75,7 @@ public class PlayerDamageListener implements Listener {
                 }
 
                 if (totem != null) {
+                    p.getActivePotionEffects().clear();
                     p.setFireTicks(0);
                     p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 40, 1));
                     p.getWorld().playSound(p.getLocation(), Sound.ITEM_TOTEM_USE, 1, 1);
