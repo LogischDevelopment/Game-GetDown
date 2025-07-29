@@ -9,12 +9,12 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import tv.logisch.game.GetDown;
 import tv.logisch.game.enums.GameState;
 import tv.logisch.game.scoreboard.Scoreboard;
 import tv.logisch.game.utils.Format;
+import tv.logisch.game.worlds.WorldManager;
+import tv.logisch.game.worlds.WorldObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +37,7 @@ public class GameManager {
 
     private GameState state;
     private PlayerCoinManager playerCoinManager;
+    private WorldManager worldManager;
 
     private World waitingWorld;
     private World gameWorld;
@@ -54,65 +55,73 @@ public class GameManager {
     public GameManager() {
         this.state = GameState.WAITING;
         this.playerCoinManager = new PlayerCoinManager();
+        this.worldManager = new WorldManager();
         this.shoppingTime = 120;
         this.percentage = 20;
-        this.worldName = "getdown";
+        this.worldName = "drop1";
         this.playersFinished = new ArrayList<>();
     }
 
     public void start() {
         this.state = GameState.STARTING;
-        this.gameWorld(Bukkit.createWorld(new WorldCreator(this.worldName)));
-        WorldManager wm = new WorldManager(this.worldName, new Location(this.gameWorld, -100, 0, -100), new Location(this.gameWorld, 100, 255, 100));
-        CompletableFuture<Boolean> booleanCompletableFuture = wm.replacePlaceholders(Material.RED_CONCRETE, List.of(
-                Material.FIRE_CORAL_BLOCK,
-                Material.RED_MUSHROOM_BLOCK,
-                Material.RED_GLAZED_TERRACOTTA,
-                Material.CRIMSON_NYLIUM,
-                Material.RED_WOOL,
-                Material.STRIPPED_MANGROVE_WOOD,
-                Material.MANGROVE_PLANKS,
-                Material.CRIMSON_HYPHAE,
-                Material.BLACKSTONE,
-                Material.CRACKED_DEEPSLATE_TILES,
-                Material.BASALT,
-                Material.NETHER_WART_BLOCK
-        ));
-        booleanCompletableFuture.thenAccept(success -> {
-            Bukkit.getOnlinePlayers().forEach(p -> {
-                p.teleport(this.gameWorld.getSpawnLocation());
-                p.getInventory().clear();
-                p.setGameMode(GameMode.SURVIVAL);
-            });
-            Bukkit.getScheduler().runTaskAsynchronously(GetDown.instance(), () -> {
-                int time = 15;
-                while (time > 0) {
-                    int finalTime = time;
-                    Bukkit.getOnlinePlayers().forEach(p -> {
-                        if(finalTime == 15 || finalTime == 10 || finalTime <= 5) {
-                            p.sendMessage(GetDown.instance().prefix() + "Das Spiel startet in §f"+finalTime+" §7Sekunden!");
-                            p.playSound(p, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.0f);
-                        }
-                        p.setLevel(finalTime);
-                        p.setExp((float) finalTime / 15);
-                    });
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    time--;
-                }
-                this.state = GameState.RUNNING;
+        GetDown.instance().logger().info("worldManager = " + this.worldManager);
+        GetDown.instance().logger().info("worldName = " + this.worldName);
+
+        GetDown.instance().logger().info("A: Vor Aufruf generateWorld");
+        CompletableFuture<WorldObject> generateWorld = this.worldManager.generateWorld(this.worldName);
+        GetDown.instance().logger().info("B: Nach Aufruf generateWorld");
+
+        generateWorld.thenAccept(worldRaw -> {
+            if(!(worldRaw instanceof WorldObject world)) {
+                GetDown.instance().logger().severe("Failed to generate world: " + this.worldName);
+                Bukkit.getOnlinePlayers().forEach(p -> p.sendMessage(GetDown.instance().prefix() + "§cFehler beim Generieren der Welt!"));
+                return;
+            }
+            Bukkit.getScheduler().runTask(GetDown.instance(), () -> {
+                GetDown.instance().logger().info("World generated: " + world.name());
+                this.gameWorld(Bukkit.getWorld(world.name()));
                 Bukkit.getOnlinePlayers().forEach(p -> {
-                    p.sendMessage(GetDown.instance().prefix() + "Das Spiel hat begonnen!");
-                    p.playSound(p, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
-                    p.setLevel(0);
-                    p.setExp(0);
+                    p.teleport(this.gameWorld.getSpawnLocation());
+                    p.getInventory().clear();
+                    p.setGameMode(GameMode.SURVIVAL);
                 });
-                Scoreboard.scoreboards.forEach(Scoreboard::start);
-                this.startScoreboardUpdater();
+                Bukkit.getScheduler().runTaskAsynchronously(GetDown.instance(), () -> {
+                    int time = 15;
+                    while (time > 0) {
+                        int finalTime = time;
+                        Bukkit.getOnlinePlayers().forEach(p -> {
+                            if(finalTime == 15 || finalTime == 10 || finalTime <= 5) {
+                                p.sendMessage(GetDown.instance().prefix() + "Das Spiel startet in §f"+finalTime+" §7Sekunden!");
+                                p.playSound(p, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.0f);
+                            }
+                            p.setLevel(finalTime);
+                            p.setExp((float) finalTime / 15);
+                        });
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        time--;
+                    }
+                    this.state = GameState.RUNNING;
+                    Bukkit.getOnlinePlayers().forEach(p -> {
+                        p.sendMessage(GetDown.instance().prefix() + "Das Spiel hat begonnen!");
+                        p.playSound(p, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
+                        p.setLevel(0);
+                        p.setExp(0);
+                    });
+                    Scoreboard.scoreboards.forEach(Scoreboard::start);
+                    this.startScoreboardUpdater();
+                });
             });
+        })
+        .exceptionally(ex -> {
+            GetDown.instance().logger().severe("Fehler beim Generieren der Welt: " + ex.getMessage());
+            ex.printStackTrace();
+            Bukkit.getOnlinePlayers().forEach(p ->
+                    p.sendMessage(GetDown.instance().prefix() + "§cFehler beim Generieren der Welt!"));
+            return null;
         });
     }
 
