@@ -4,7 +4,11 @@
       "name": "drop1",
       "item": "GRASS_BLOCK",
       "difficulty": "Easy",
-      "colors": ["red", "green", "purple"],
+      "colors": [
+        "red",
+        "green",
+        "purple"
+      ],
       "spawnPoint": {
         "x": -34.5,
         "y": 100,
@@ -12,7 +16,11 @@
         "yaw": 0,
         "pitch": 0
       },
-      "builders": ["Fb1an", "OrangeAchi", "Jan0schi"],
+      "builders": [
+        "Fb1an",
+        "OrangeAchi",
+        "Jan0schi"
+      ],
       "materials": {
         "GOLD_BLOCK": 10,
         "DIAMOND_BLOCK": 5,
@@ -33,61 +41,62 @@
       "floorPlaceholder": "WHITE_CONCRETE"
     }
   ],
-
   "colors": [
     {
       "name": "red",
-        "materials": [
-            "RED_WOOL",
-            "RED_MUSHROOM_BLOCK",
-            "FIRE_CORAL_BLOCK",
-            "STRIPPED_OAK_LOG",
-            "MANGROVE_PLANKS",
-            "CRIMSON_HYPHAE",
-            "NETHER_WART_BLOCK",
-            "CRIMSON_NYLIUM",
-            "BLACKSTONE",
-            "CRACKED_DEEPSLATE_TILES",
-            "BASALT",
-            "RED_GLAZED_TERRACOTTA"
-        ],
-        "floor": "GRAY_CONCRETE"
-        },
-        {
-        "name": "green",
-        "materials": [
-          "GREEN_GLAZED_TERRACOTTA",
-          "BLOCK_OF_BAMBOO",
-            "MELON",
-            "LIME_TERRACOTTA",
-            "GRASS_BLOCK",
-            "MOSS_BLOCK",
-            "GREEN_WOOL",
-            "GREEN_CONCRETE",
-            "GREEN_TERRACOTTA",
-            "MUD_BRICKS",
-            "BROWN_MUSHROOM_BLOCK",
-            "PACKED_MUD"
-        ],
-        "floor": "BROWN_CONCRETE"
-        },
-        {
-        "name": "purple",
-        "materials": [
-          "SMOOTH_QUARTZ_BLOCK",
-          "BIRCH_WOOD",
-            "CALCITE",
-            "MAGENTA_WOOL",
-            "MAGENTA_CONCRETE",
-            "MAGENTA_GLAZED_TERRACOTTA",
-            "PURPUR_PILLAR",
-            "PURPLE_GLAZED_TERRACOTTA",
-            "BLOCK_OF_AMETHYST",
-            "PURPLE_WOOL",
-            "PURPLE_CONCRETE"
-        ],
-        "floor": "WHITE_CONCRETE"
+      "item": "RED_DYE",
+      "materials": [
+        "RED_WOOL",
+        "RED_MUSHROOM_BLOCK",
+        "FIRE_CORAL_BLOCK",
+        "STRIPPED_OAK_LOG",
+        "MANGROVE_PLANKS",
+        "CRIMSON_HYPHAE",
+        "NETHER_WART_BLOCK",
+        "CRIMSON_NYLIUM",
+        "BLACKSTONE",
+        "CRACKED_DEEPSLATE_TILES",
+        "BASALT",
+        "RED_GLAZED_TERRACOTTA"
+      ],
+      "floor": "GRAY_CONCRETE"
+    },
+    {
+      "name": "green",
+      "item": "GREEN_DYE",
+      "materials": [
+        "GREEN_GLAZED_TERRACOTTA",
+        "BLOCK_OF_BAMBOO",
+        "MELON",
+        "LIME_TERRACOTTA",
+        "GRASS_BLOCK",
+        "MOSS_BLOCK",
+        "GREEN_WOOL",
+        "GREEN_CONCRETE",
+        "GREEN_TERRACOTTA",
+        "MUD_BRICKS",
+        "BROWN_MUSHROOM_BLOCK",
+        "PACKED_MUD"
+      ],
+      "floor": "BROWN_CONCRETE"
+    },
+    {
+      "name": "purple",
+      "item": "PURPLE_DYE",
+      "materials": [
+        "SMOOTH_QUARTZ_BLOCK",
+        "BIRCH_WOOD",
+        "CALCITE",
+        "MAGENTA_WOOL",
+        "MAGENTA_CONCRETE",
+        "MAGENTA_GLAZED_TERRACOTTA",
+        "PURPUR_PILLAR",
+        "PURPLE_GLAZED_TERRACOTTA",
+        "BLOCK_OF_AMETHYST",
+        "PURPLE_WOOL",
+        "PURPLE_CONCRETE"
+      ],
+      "floor": "WHITE_CONCRETE"
     }
   ]
-
 }

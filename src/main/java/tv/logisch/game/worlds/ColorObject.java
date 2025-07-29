@@ -15,6 +15,7 @@ import java.util.List;
 public class ColorObject {
 
     private String name;
+    private Material item;
     private List<Material> materials;
     private Material floor;
 

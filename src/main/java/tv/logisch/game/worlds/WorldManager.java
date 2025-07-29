@@ -5,6 +5,7 @@ import lombok.experimental.Accessors;
 import org.bukkit.*;
 import org.json.JSONObject;
 import tv.logisch.game.GetDown;
+import tv.logisch.game.manager.GameManager;
 
 import java.io.File;
 import java.util.*;
@@ -47,6 +48,7 @@ public class WorldManager {
                 JSONObject colorJson = (JSONObject) item;
                 ColorObject color = new ColorObject(
                         colorJson.getString("name"),
+                        Material.getMaterial(colorJson.getString("item")),
                         colorJson.getJSONArray("materials").toList().stream()
                                 .map(obj -> Material.getMaterial((String) obj))
                                 .filter(Objects::nonNull)
@@ -120,7 +122,6 @@ public class WorldManager {
     }
 
     public CompletableFuture<WorldObject> generateWorld(String name) {
-        GetDown.instance().logger().info("Generating world: " + name);
         CompletableFuture<WorldObject> future = new CompletableFuture<>();
 
         // Hole das WorldObject (z.B. aus Konfiguration)
@@ -143,8 +144,6 @@ public class WorldManager {
                 return;
             }
 
-            GetDown.instance().logger().info("World created: " + world.getName());
-
             // Initiale Einstellungen (synchron)
             world.setSpawnLocation(worldObject.spawnPoint().getBlockX(), worldObject.spawnPoint().getBlockY(), worldObject.spawnPoint().getBlockZ());
             world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
@@ -154,8 +153,8 @@ public class WorldManager {
             Bukkit.getScheduler().runTaskAsynchronously(GetDown.instance(), () -> {
                 try {
                     // Zufällige Farbe
-                    String colorName = worldObject.colors().stream()
-                            .skip((int) (Math.random() * worldObject.colors().size()))
+                    String colorName = GameManager.get().colorNames().stream()
+                            .skip((int) (Math.random() * GameManager.get().colorNames().size()))
                             .findFirst()
                             .orElseThrow(() -> new IllegalArgumentException("No color found for world: " + name));
 
@@ -189,8 +188,6 @@ public class WorldManager {
                         z1 = z2;
                         z2 = temp;
                     }
-                    GetDown.instance().logger().info("Replacing blocks in area: " + x1 + "," + y1 + "," + z1 + " to " + x2 + "," + y2 + "," + z2);
-                    GetDown.instance().logger().info("Placeholder: " + worldObject.placeholder() + ", Floor Placeholder: " + worldObject.floorPlaceholder());
                     for (int x = x1; x <= x2; x++) {
                         for (int y = y1; y <= y2; y++) {
                             for (int z = z1; z <= z2; z++) {
@@ -208,13 +205,10 @@ public class WorldManager {
                             }
                         }
                     }
-                    GetDown.instance().logger().info("Total placeholder locations: " + placeholderLocations.size() + " in " + coun2t + " blocks");
 
                     int total = placeholderLocations.size();
-                    GetDown.instance().logger().info("Total placeholder blocks: " + total);
                     for (Map.Entry<Material, Double> entry : worldObject.materials().entrySet()) {
                         int count = (int) (total * (entry.getValue() / 100.0));
-                        GetDown.instance().logger().info("Replacing " + count + " blocks with " + entry.getKey() + " (" + entry.getValue() + "%)");
                         Collections.shuffle(placeholderLocations);
                         for (int i = 0; i < count && !placeholderLocations.isEmpty(); i++) {
                             Location loc = placeholderLocations.removeFirst();
@@ -223,7 +217,6 @@ public class WorldManager {
                             });
                         }
                     }
-                    GetDown.instance().logger().info("Remaining placeholder locations: " + placeholderLocations.size());
 
                     for (Location loc : placeholderLocations) {
                         Material material = colorObject.materials().get((int) (Math.random() * colorObject.materials().size()));
@@ -234,7 +227,6 @@ public class WorldManager {
 
                     // ✅ Welt ist fertig
                     future.complete(worldObject);
-                    GetDown.instance().logger().info("Finished world generation: " + name);
 
                 } catch (Exception e) {
                     future.completeExceptionally(new RuntimeException("Error generating world: " + name, e));
@@ -245,7 +237,10 @@ public class WorldManager {
         return future;
     }
 
-
-
+    public List<ColorObject> getWorldColors(WorldObject world) {
+        return this.colors.stream()
+                .filter(color -> world.colors().contains(color.name()))
+                .collect(Collectors.toList());
+    }
 
 }
