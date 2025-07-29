@@ -11,26 +11,26 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import tv.logisch.game.GetDown;
 import tv.logisch.game.manager.GameManager;
-import tv.logisch.game.worlds.WorldObject;
+import tv.logisch.game.worlds.ColorObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class WorldGUI {
+public class ColorGUI {
 
-    public static List<WorldGUI> guis = new ArrayList<>();
-    public static WorldGUI get(Player player) {
-        for (WorldGUI gui : guis) {
+    public static List<ColorGUI> guis = new ArrayList<>();
+    public static ColorGUI get(Player player) {
+        for (ColorGUI gui : guis) {
             if (gui.p.equals(player)) {
                 return gui;
             }
         }
-        WorldGUI newGui = new WorldGUI(player);
+        ColorGUI newGui = new ColorGUI(player);
         guis.add(newGui);
         return newGui;
     }
     public static boolean has(Player player) {
-        for(WorldGUI gui : guis) {
+        for(ColorGUI gui : guis) {
             if(gui.p.equals(player)) {
                 return true;
             }
@@ -47,7 +47,7 @@ public class WorldGUI {
 
     private Inventory inventory;
 
-    private WorldGUI(Player player) {
+    private ColorGUI(Player player) {
         this.p = player;
         this.page = 1;
         guis.add(this);
@@ -78,9 +78,7 @@ public class WorldGUI {
             m.getPersistentDataContainer().set(GameManager.get().worldsKey(), PersistentDataType.STRING, "open_worlds");
         });
         this.inventory.setItem(9, itemStack);
-        ItemStack activeCategory = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
-        activeCategory.editMeta(m -> m.setHideTooltip(true));
-        this.inventory.setItem(10, activeCategory);
+        this.inventory.setItem(10, placeholderStack);
 
         itemStack = new ItemStack(Material.LIGHT_BLUE_DYE, 1);
         itemStack.editMeta(m -> {
@@ -91,21 +89,23 @@ public class WorldGUI {
             m.getPersistentDataContainer().set(GameManager.get().worldsKey(), PersistentDataType.STRING, "open_colors");
         });
         this.inventory.setItem(18, itemStack);
-        this.inventory.setItem(19, placeholderStack);
+        ItemStack activeCategory = new ItemStack(Material.LIME_STAINED_GLASS_PANE);
+        activeCategory.editMeta(m -> m.setHideTooltip(true));
+        this.inventory.setItem(19, activeCategory);
 
 
         /* WORLDS */
-        List<WorldObject> worlds = GameManager.get().worldManager().worlds();
+        List<ColorObject> colors = GameManager.get().worldManager().colors();
         List<Integer> fields = new ArrayList<>(List.of(11, 12, 13, 14, 15, 16, 17));
-        for(WorldObject w : worlds) {
-            ItemStack eItem = new ItemStack(w.item(), 1);
+        for(ColorObject c : colors) {
+            ItemStack eItem = new ItemStack(c.item(), 1);
             eItem.editMeta(m -> {
-                String color = GameManager.get().worldName().equals(w.name()) ? "a" : "c";
-                m.displayName(Component.text("§8» §"+color+"§l" + w.name()));
+                String color = GameManager.get().colorNames().contains(c.name()) ? "a" : "c";
+                m.displayName(Component.text("§8» §"+color+"§l" + c.name()));
                 m.lore(List.of(
-                        Component.text("§7Click to select this world.")
+                        Component.text("§7Click to select this color.")
                 ));
-                m.getPersistentDataContainer().set(GameManager.get().worldsKey(), PersistentDataType.STRING, "select_world_" + w.name());
+                m.getPersistentDataContainer().set(GameManager.get().worldsKey(), PersistentDataType.STRING, "select_color_" + c.name());
             });
             if(!fields.isEmpty()) {
                 this.inventory.setItem(fields.getFirst(), eItem);
@@ -124,7 +124,7 @@ public class WorldGUI {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof WorldGUI gui)) return false;
+        if (!(o instanceof ColorGUI gui)) return false;
         return p.equals(gui.p);
     }
 

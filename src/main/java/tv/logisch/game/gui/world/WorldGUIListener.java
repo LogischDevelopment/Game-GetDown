@@ -16,6 +16,7 @@ import org.bukkit.persistence.PersistentDataType;
 import tv.logisch.game.GetDown;
 import tv.logisch.game.enums.GameState;
 import tv.logisch.game.manager.GameManager;
+import tv.logisch.game.worlds.ColorObject;
 import tv.logisch.game.worlds.WorldObject;
 
 public class WorldGUIListener implements Listener {
@@ -55,6 +56,10 @@ public class WorldGUIListener implements Listener {
             WorldGUI.get(p).open();
             p.playSound(p, Sound.BLOCK_NOTE_BLOCK_HAT, 1.0f, 1.0f);
             return;
+        } else if(action.equals("open_colors")) {
+            ColorGUI.get(p).open();
+            p.playSound(p, Sound.BLOCK_NOTE_BLOCK_HAT, 1.0f, 1.0f);
+            return;
         }
 
         if(action.startsWith("select_world_")) {
@@ -69,6 +74,33 @@ public class WorldGUIListener implements Listener {
             p.playSound(p, Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 1.0f);
             WorldGUI.guis.forEach(WorldGUI::update);
             return;
+        } else if(action.startsWith("select_color_")) {
+            if(!GameManager.get().state().equals(GameState.WAITING)) {
+                p.sendMessage(GetDown.instance().prefix() + "§cYou can only select a color when the game is waiting.");
+                return;
+            }
+            String colorName = action.replaceFirst("select_color_", "");
+            ColorObject color = GameManager.get().worldManager().colors().stream()
+                    .filter(c -> c.name().equals(colorName))
+                    .findFirst()
+                    .orElse(null);
+            if(color == null) return;
+            if(GameManager.get().colorNames().contains(color.name())) {
+                if(GameManager.get().colorNames().size() <= 1) return;
+                GameManager.get().colorNames().remove(color.name());
+                p.playSound(p, Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 1.0f);
+                ColorGUI.guis.forEach(ColorGUI::update);
+            } else {
+                GameManager.get().worldManager().worlds().stream()
+                        .filter(w -> w.name().equals(GameManager.get().worldName()))
+                        .filter(w -> w.colors().contains(color.name()))
+                        .findAny()
+                        .ifPresent(worldObject -> {
+                            GameManager.get().colorNames().add(color.name());
+                            p.playSound(p, Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 1.0f);
+                            ColorGUI.guis.forEach(ColorGUI::update);
+                        });
+            }
         }
     }
 

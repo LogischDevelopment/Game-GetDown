@@ -13,6 +13,7 @@ import tv.logisch.game.GetDown;
 import tv.logisch.game.enums.GameState;
 import tv.logisch.game.scoreboard.Scoreboard;
 import tv.logisch.game.utils.Format;
+import tv.logisch.game.worlds.ColorObject;
 import tv.logisch.game.worlds.WorldManager;
 import tv.logisch.game.worlds.WorldObject;
 
@@ -44,6 +45,7 @@ public class GameManager {
     private World pvpWorld;
 
     private String worldName;
+    private List<String> colorNames;
     private int shoppingTime;
     private int percentage;
 
@@ -59,8 +61,10 @@ public class GameManager {
         this.worldManager = new WorldManager();
         this.shoppingTime = 120;
         this.percentage = 20;
-        this.worldName = "drop1";
         this.playersFinished = new ArrayList<>();
+        this.worldName = "drop1";
+        this.colorNames = this.worldManager.colors().stream().map(ColorObject::name).toList();
+        this.worldManager.worlds().stream().filter(w -> w.name().equals(this.worldName)).findFirst().ifPresent(worldObj -> this.colorNames = worldObj.colors());
     }
 
     public void start() {
