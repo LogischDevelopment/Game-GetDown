@@ -50,6 +50,7 @@ public class PlayerMoveListener implements Listener {
                         if(e.getPlayer().getLocation().getBlockY() <= 1) {
                             if(GameManager.get().playersFinished.contains(e.getPlayer())) return;
                             GameManager.get().playersFinished.add(e.getPlayer());
+                            Scoreboard.scoreboards.forEach(Scoreboard::update);
                             int finishedCount = GameManager.get().playersFinished.size();
                             if(finishedCount == 1) {
                                 GameManager.get().playerCoinManager().addCoins(e.getPlayer(), 300);
@@ -150,7 +151,7 @@ public class PlayerMoveListener implements Listener {
                     int max = 115;
                     int coins = (int) (Math.random() * (max - min + 1)) + min;
                     GameManager.get().playerCoinManager().addCoins(e.getPlayer(), coins);
-                    e.getPlayer().sendTitlePart(TitlePart.TITLE, Component.text("§a+" + coins));
+                    e.getPlayer().sendTitlePart(TitlePart.TITLE, Component.text("§6+" + coins));
                     e.getPlayer().playSound(e.getPlayer(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1.0f, 1.0f);
                     block.setType(Material.LIGHT_BLUE_CONCRETE);
                 }, 1L);
