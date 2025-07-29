@@ -8,12 +8,10 @@ import org.bukkit.WorldCreator;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import tv.logisch.api.LogiAPI;
-import tv.logisch.game.commands.Coins;
-import tv.logisch.game.commands.Settings;
-import tv.logisch.game.commands.Start;
-import tv.logisch.game.commands.Skip;
+import tv.logisch.game.commands.*;
 import tv.logisch.game.gui.settings.SettingGUIListener;
 import tv.logisch.game.gui.shop.ShopGUIListener;
+import tv.logisch.game.gui.world.WorldGUIListener;
 import tv.logisch.game.listener.*;
 import tv.logisch.game.manager.GameManager;
 import tv.logisch.game.objects.GameConfig;
@@ -72,6 +70,7 @@ public final class GetDown extends JavaPlugin {
         pm.registerEvents(new PlayerDropListener(), this);
         pm.registerEvents(new PlayerFoodLevelChangeListener(), this);
         pm.registerEvents(new SettingGUIListener(), this);
+        pm.registerEvents(new WorldGUIListener(), this);
         pm.registerEvents(new EntityRegainHealthListener(), this);
 
         /* COMMAND REGISTRATION */
@@ -79,6 +78,7 @@ public final class GetDown extends JavaPlugin {
         getCommand("coins").setExecutor(new Coins());
         getCommand("skip").setExecutor(new Skip());
         getCommand("settings").setExecutor(new Settings());
+        getCommand("worlds").setExecutor(new Worlds());
 
         GameManager.get().waitingWorld(Bukkit.createWorld(new WorldCreator("waiting")));
         GameManager.get().pvpWorld(Bukkit.createWorld(new WorldCreator("pvp")));
