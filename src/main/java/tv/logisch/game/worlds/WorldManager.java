@@ -146,6 +146,7 @@ public class WorldManager {
 
             // Initiale Einstellungen (synchron)
             world.setSpawnLocation(worldObject.spawnPoint().getBlockX(), worldObject.spawnPoint().getBlockY(), worldObject.spawnPoint().getBlockZ());
+            worldObject.spawnPoint(world.getSpawnLocation().clone().add(0.5, 0, 0.5));
             world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
             world.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
 
