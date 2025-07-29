@@ -1,0 +1,92 @@
+{
+  "worlds": [
+    {
+      "name": "drop1",
+      "difficulty": "Easy",
+      "colors": ["red", "green", "purple"],
+      "spawnPoint": {
+        "x": -34.5,
+        "y": 100,
+        "z": 37.5,
+        "yaw": 0,
+        "pitch": 0
+      },
+      "builders": ["Fb1an", "OrangeAchi", "Jan0schi"],
+      "materials": {
+        "GOLD_BLOCK": 10,
+        "DIAMOND_BLOCK": 5,
+        "IRON_BLOCK": 6,
+        "LAPIS_BLOCK": 6
+      },
+      "loc1": {
+        "x": -2,
+        "y": -1,
+        "z": 5
+      },
+      "loc2": {
+        "x": -67,
+        "y": 101,
+        "z": 69
+      },
+      "placeholder": "RED_CONCRETE",
+      "floorPlaceholder": "WHITE_CONCRETE"
+    }
+  ],
+
+  "colors": [
+    {
+      "name": "red",
+        "materials": [
+            "RED_WOOL",
+            "RED_MUSHROOM_BLOCK",
+            "FIRE_CORAL_BLOCK",
+            "STRIPPED_OAK_LOG",
+            "MANGROVE_PLANKS",
+            "CRIMSON_HYPHAE",
+            "NETHER_WART_BLOCK",
+            "CRIMSON_NYLIUM",
+            "BLACKSTONE",
+            "CRACKED_DEEPSLATE_TILES",
+            "BASALT",
+            "RED_GLAZED_TERRACOTTA"
+        ],
+        "floor": "GRAY_CONCRETE"
+        },
+        {
+        "name": "green",
+        "materials": [
+          "GREEN_GLAZED_TERRACOTTA",
+          "BLOCK_OF_BAMBOO",
+            "MELON",
+            "LIME_TERRACOTTA",
+            "GRASS_BLOCK",
+            "MOSS_BLOCK",
+            "GREEN_WOOL",
+            "GREEN_CONCRETE",
+            "GREEN_TERRACOTTA",
+            "MUD_BRICKS",
+            "BROWN_MUSHROOM_BLOCK",
+            "PACKED_MUD"
+        ],
+        "floor": "BROWN_CONCRETE"
+        },
+        {
+        "name": "purple",
+        "materials": [
+          "SMOOTH_QUARTZ_BLOCK",
+          "BIRCH_WOOD",
+            "CALCITE",
+            "MAGENTA_WOOL",
+            "MAGENTA_CONCRETE",
+            "MAGENTA_GLAZED_TERRACOTTA",
+            "PURPUR_PILLAR",
+            "PURPLE_GLAZED_TERRACOTTA",
+            "BLOCK_OF_AMETHYST",
+            "PURPLE_WOOL",
+            "PURPLE_CONCRETE"
+        ],
+        "floor": "WHITE_CONCRETE"
+    }
+  ]
+
+}
