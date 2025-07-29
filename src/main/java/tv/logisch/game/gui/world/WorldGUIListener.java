@@ -71,6 +71,10 @@ public class WorldGUIListener implements Listener {
             WorldObject world = GameManager.get().worldManager().worlds().stream().filter(w -> w.name().equals(worldName)).findFirst().orElse(null);
             if(world == null) return;
             GameManager.get().worldName(world.name());
+            if(!world.colors().isEmpty()) {
+                GameManager.get().colorNames().clear();
+                GameManager.get().colorNames().addAll(world.colors());
+            }
             p.playSound(p, Sound.BLOCK_NOTE_BLOCK_BASS, 1.0f, 1.0f);
             WorldGUI.guis.forEach(WorldGUI::update);
             return;
