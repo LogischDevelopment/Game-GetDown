@@ -62,6 +62,7 @@ public class WorldManager {
                 JSONObject worldJson = (JSONObject) item;
 
                 String name = worldJson.getString("name");
+                Material worldItem = Material.getMaterial(worldJson.getString("item"));
                 String difficulty = worldJson.getString("difficulty");
                 List<String> colors = worldJson.getJSONArray("colors").toList().stream()
                         .map(Object::toString)
@@ -102,6 +103,7 @@ public class WorldManager {
                 Material floorPlaceholder = Material.getMaterial(worldJson.getString("floorPlaceholder"));
                 WorldObject world = new WorldObject(
                         name,
+                        worldItem,
                         difficulty,
                         colors,
                         spawnPoint,

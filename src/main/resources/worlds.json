@@ -2,6 +2,7 @@
   "worlds": [
     {
       "name": "drop1",
+      "item": "GRASS_BLOCK",
       "difficulty": "Easy",
       "colors": ["red", "green", "purple"],
       "spawnPoint": {

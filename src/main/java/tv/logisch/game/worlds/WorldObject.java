@@ -17,6 +17,7 @@ import java.util.Map;
 public class WorldObject {
 
     private String name;
+    private Material item;
     private String difficulty;
     private List<String> colors;
     private Location spawnPoint;
