@@ -49,6 +49,7 @@ public class GameManager {
 
     private NamespacedKey shopKey = new NamespacedKey("logisch_getdown", "shop");
     private NamespacedKey settingKey = new NamespacedKey("logisch_getdown", "settings");
+    private NamespacedKey worldsKey = new NamespacedKey("logisch_getdown", "worlds");
 
     public List<Player> playersFinished;
 
