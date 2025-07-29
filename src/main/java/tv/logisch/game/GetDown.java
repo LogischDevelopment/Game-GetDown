@@ -72,6 +72,7 @@ public final class GetDown extends JavaPlugin {
         pm.registerEvents(new PlayerDropListener(), this);
         pm.registerEvents(new PlayerFoodLevelChangeListener(), this);
         pm.registerEvents(new SettingGUIListener(), this);
+        pm.registerEvents(new EntityRegainHealthListener(), this);
 
         /* COMMAND REGISTRATION */
         getCommand("start").setExecutor(new Start());
