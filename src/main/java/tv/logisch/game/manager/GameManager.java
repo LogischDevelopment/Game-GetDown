@@ -63,19 +63,17 @@ public class GameManager {
         this.percentage = 20;
         this.playersFinished = new ArrayList<>();
         this.worldName = "drop1";
-        this.colorNames = this.worldManager.colors().stream().map(ColorObject::name).toList();
-        this.worldManager.worlds().stream().filter(w -> w.name().equals(this.worldName)).findFirst().ifPresent(worldObj -> this.colorNames = worldObj.colors());
+        this.colorNames = new ArrayList<>();
+        this.colorNames.addAll(this.worldManager.colors().stream().map(ColorObject::name).toList());
+        this.worldManager.worlds().stream().filter(w -> w.name().equals(this.worldName)).findFirst().ifPresent(worldObj -> {
+            this.colorNames.clear();
+            this.colorNames.addAll(worldObj.colors());
+        });
     }
 
     public void start() {
         this.state = GameState.STARTING;
-        GetDown.instance().logger().info("worldManager = " + this.worldManager);
-        GetDown.instance().logger().info("worldName = " + this.worldName);
-
-        GetDown.instance().logger().info("A: Vor Aufruf generateWorld");
         CompletableFuture<WorldObject> generateWorld = this.worldManager.generateWorld(this.worldName);
-        GetDown.instance().logger().info("B: Nach Aufruf generateWorld");
-
         generateWorld.thenAccept(worldRaw -> {
             if(!(worldRaw instanceof WorldObject world)) {
                 GetDown.instance().logger().severe("Failed to generate world: " + this.worldName);
@@ -83,10 +81,9 @@ public class GameManager {
                 return;
             }
             Bukkit.getScheduler().runTask(GetDown.instance(), () -> {
-                GetDown.instance().logger().info("World generated: " + world.name());
                 this.gameWorld(Bukkit.getWorld(world.name()));
                 Bukkit.getOnlinePlayers().forEach(p -> {
-                    p.teleport(this.gameWorld.getSpawnLocation());
+                    p.teleport(world.spawnPoint());
                     p.getInventory().clear();
                     p.setGameMode(GameMode.SURVIVAL);
                 });
