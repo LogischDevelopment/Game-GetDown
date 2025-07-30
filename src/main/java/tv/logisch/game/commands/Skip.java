@@ -21,6 +21,10 @@ public class Skip implements CommandExecutor {
             sender.sendMessage(GetDown.instance().prefix()+"§cYou cannot skip this Phase.");
             return true;
         }
+        if(GameManager.get().shoppingTime() <= 10) {
+            sender.sendMessage(GetDown.instance().prefix()+"§cYou cannot skip this Phase, because there are only "+GameManager.get().shoppingTime()+" seconds left.");
+            return true;
+        }
         GameManager.get().shoppingTime(10);
         return true;
     }
