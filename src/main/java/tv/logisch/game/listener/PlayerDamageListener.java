@@ -40,12 +40,36 @@ public class PlayerDamageListener implements Listener {
                 p.playSound(p, Sound.ENTITY_PLAYER_DEATH, 1.0f, 1.0f);
                 return;
             }
+            if(p.getLocation().getBlockY() >= p.getWorld().getSpawnLocation().getBlockY()) {
+                e.setCancelled(true);
+                return;
+            }
+            if(e.getCause() == EntityDamageEvent.DamageCause.FALL) {
+                double newDamage = e.getDamage() * 1.25;
+                if(newDamage >= p.getHealth()) {
+                    e.setCancelled(true);
+                    p.setHealth(20.0);
+                    p.getInventory().clear();
+                    p.getActivePotionEffects().forEach(effect -> p.removePotionEffect(effect.getType()));
+                    p.getWorld().playSound(p.getLocation(), Sound.ENTITY_PLAYER_DEATH, 1.0f, 1.0f);
+                    p.teleport(p.getWorld().getSpawnLocation());
+                    int coins = GameManager.get().playerCoinManager().getCoins(p);
+                    int min = (int) (coins * 0.05);
+                    int max = (int) (coins * 0.15);
+                    coins = (int) (Math.random() * (max - min + 1) + min);
+                    GameManager.get().playerCoinManager().removeCoins(p, coins);
+                    p.sendTitlePart(TitlePart.TITLE, Component.text("§c-" + coins));
+                } else {
+                    e.setDamage(newDamage);
+                }
+                return;
+            }
             if(e.getFinalDamage() >= p.getHealth()) {
 
                 e.setCancelled(true);
                 p.setHealth(20.0);
                 p.getInventory().clear();
-                p.getActivePotionEffects().clear();
+                p.getActivePotionEffects().forEach(effect -> p.removePotionEffect(effect.getType()));
                 p.getWorld().playSound(p.getLocation(), Sound.ENTITY_PLAYER_DEATH, 1.0f, 1.0f);
                 p.teleport(p.getWorld().getSpawnLocation());
                 int coins = GameManager.get().playerCoinManager().getCoins(p);
@@ -75,7 +99,7 @@ public class PlayerDamageListener implements Listener {
                 }
 
                 if (totem != null) {
-                    p.getActivePotionEffects().clear();
+                    p.getActivePotionEffects().forEach(effect -> p.removePotionEffect(effect.getType()));
                     p.setFireTicks(0);
                     p.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 40, 1));
                     p.getWorld().playSound(p.getLocation(), Sound.ITEM_TOTEM_USE, 1, 1);
@@ -102,6 +126,7 @@ public class PlayerDamageListener implements Listener {
                     p.getWorld().dropItem(p.getLocation(), is);
                 });
                 p.getInventory().clear();
+                p.getActivePotionEffects().forEach(effect -> p.removePotionEffect(effect.getType()));
                 p.getWorld().playSound(p.getLocation(), Sound.ENTITY_PLAYER_DEATH, 1.0f, 1.0f);
                 p.setGameMode(GameMode.SPECTATOR);
                 AtomicInteger remaining = new AtomicInteger(0);
@@ -117,6 +142,7 @@ public class PlayerDamageListener implements Listener {
                     GameManager.get().stop(winner.get());
                 }
             }
+            e.setCancelled(false);
 
         }
 

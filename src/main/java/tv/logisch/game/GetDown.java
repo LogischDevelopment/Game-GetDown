@@ -5,6 +5,7 @@ import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.bukkit.Bukkit;
+import org.bukkit.Difficulty;
 import org.bukkit.GameRule;
 import org.bukkit.WorldCreator;
 import org.bukkit.plugin.PluginManager;
@@ -86,11 +87,12 @@ public final class GetDown extends JavaPlugin {
 
         GameManager.get().waitingWorld(Bukkit.createWorld(new WorldCreator("waiting")));
         GameManager.get().pvpWorld(Bukkit.createWorld(new WorldCreator("pvp")));
+        GameManager.get().pvpWorld().setDifficulty(Difficulty.NORMAL);
         Bukkit.getWorlds().forEach(w -> {
             w.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
             w.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
             w.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
-            w.setGameRule(GameRule.RANDOM_TICK_SPEED, 0);
+            w.setGameRule(GameRule.DO_MOB_SPAWNING, false);
         });
 
     }

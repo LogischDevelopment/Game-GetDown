@@ -124,7 +124,6 @@ public class WorldManager {
     public CompletableFuture<WorldObject> generateWorld(String name) {
         CompletableFuture<WorldObject> future = new CompletableFuture<>();
 
-        // Hole das WorldObject (z.B. aus Konfiguration)
         WorldObject worldObject = this.worlds.stream()
                 .filter(world -> world.name().equalsIgnoreCase(name))
                 .findFirst()
@@ -135,7 +134,6 @@ public class WorldManager {
             return future;
         }
 
-        // World-Erstellung MUSS synchron passieren
         Bukkit.getScheduler().runTask(GetDown.instance(), () -> {
             World world = Bukkit.createWorld(new WorldCreator(name));
 
@@ -144,16 +142,13 @@ public class WorldManager {
                 return;
             }
 
-            // Initiale Einstellungen (synchron)
             world.setSpawnLocation(worldObject.spawnPoint().getBlockX(), worldObject.spawnPoint().getBlockY(), worldObject.spawnPoint().getBlockZ());
             worldObject.spawnPoint(world.getSpawnLocation().clone().add(0.5, 0, 0.5));
             world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
             world.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
 
-            // Dann asynchron weitermachen (Blockersetzung etc.)
             Bukkit.getScheduler().runTaskAsynchronously(GetDown.instance(), () -> {
                 try {
-                    // Zufällige Farbe
                     String colorName = GameManager.get().colorNames().stream()
                             .skip((int) (Math.random() * GameManager.get().colorNames().size()))
                             .findFirst()
@@ -166,8 +161,6 @@ public class WorldManager {
 
                     List<Location> placeholderLocations = new ArrayList<>();
 
-                    int coun2t = 0;
-                    // Block-Ersetzung vorbereiten
                     int x1 = worldObject.loc1().getBlockX();
                     int x2 = worldObject.loc2().getBlockX();
                     if( x1 > x2) {
@@ -192,7 +185,6 @@ public class WorldManager {
                     for (int x = x1; x <= x2; x++) {
                         for (int y = y1; y <= y2; y++) {
                             for (int z = z1; z <= z2; z++) {
-                                coun2t++;
                                 Location loc = new Location(world, x, y, z);
                                 Material type = world.getBlockAt(loc).getType();
 
@@ -226,7 +218,6 @@ public class WorldManager {
                         });
                     }
 
-                    // ✅ Welt ist fertig
                     future.complete(worldObject);
 
                 } catch (Exception e) {
