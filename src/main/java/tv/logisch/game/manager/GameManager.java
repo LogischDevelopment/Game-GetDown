@@ -211,6 +211,50 @@ public class GameManager {
         this.state = GameState.PVP;
     }
 
+    int droppingPhaseCooldownTaskId;
+    public void startDroppingPhaseCooldown() {
+        AtomicInteger seconds = new AtomicInteger(30);
+        droppingPhaseCooldownTaskId = Bukkit.getScheduler().runTaskTimer(GetDown.instance(), () -> {
+            if(seconds.get() <= 0) {
+                GameManager.get().stopDroppingPhaseCooldown();
+                return;
+            }
+
+            if(seconds.get() == 30 || seconds.get() == 15 || seconds.get() <= 5) {
+                Bukkit.getOnlinePlayers().forEach(p -> {
+                    p.sendMessage(GetDown.instance().prefix() + "Die Dropping-Phase endet in §f" + seconds.get() + " §7Sekunden!");
+                    p.playSound(p, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.0f);
+                });
+            }
+
+            seconds.getAndDecrement();
+        }, 20L, 20L).getTaskId();
+    }
+
+    public void stopDroppingPhaseCooldown() {
+        if(Bukkit.getScheduler().isCurrentlyRunning(droppingPhaseCooldownTaskId)) {
+            Bukkit.getScheduler().cancelTask(droppingPhaseCooldownTaskId);
+        }
+        GameManager.get().state(GameState.FINISHED);
+
+        AtomicInteger seconds = new AtomicInteger(15);
+        AtomicInteger taskId = new AtomicInteger(0);
+        taskId.set(Bukkit.getScheduler().runTaskTimer(GetDown.instance(), () -> {
+            if(seconds.get() <= 0) {
+                GameManager.get().startShopping();
+                Bukkit.getScheduler().cancelTask(taskId.get());
+            } else {
+                if(seconds.get() == 15 || seconds.get() == 10 || seconds.get() <= 5) {
+                    Bukkit.getOnlinePlayers().forEach(p -> {
+                        p.sendMessage(Component.text(GetDown.instance().prefix() + "Die Shopping Phase beginnt in §f" + seconds.get() + " §7Sekunden!"));
+                        p.playSound(p, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.0f);
+                    });
+                }
+            }
+            seconds.getAndDecrement();
+        }, 0L, 20L).getTaskId());
+    }
+
     public void stop(Player winner) {
         this.state = GameState.ENDED;
         Bukkit.getOnlinePlayers().forEach(p -> {
