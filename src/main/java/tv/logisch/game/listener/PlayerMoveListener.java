@@ -71,14 +71,14 @@ public class PlayerMoveListener implements Listener {
                             if(finishedCount >= 3 || finishedCount == Bukkit.getOnlinePlayers().size()) {
                                 GameManager.get().state(GameState.FINISHED);
 
-                                AtomicInteger seconds = new AtomicInteger(10);
+                                AtomicInteger seconds = new AtomicInteger(15);
                                 AtomicInteger taskId = new AtomicInteger(0);
                                 taskId.set(Bukkit.getScheduler().runTaskTimer(GetDown.instance(), () -> {
                                     if(seconds.get() <= 0) {
                                         GameManager.get().startShopping();
                                         Bukkit.getScheduler().cancelTask(taskId.get());
                                     } else {
-                                        if(seconds.get() == 10 || seconds.get() <= 5) {
+                                        if(seconds.get() == 15 || seconds.get() == 10 || seconds.get() <= 5) {
                                             Bukkit.getOnlinePlayers().forEach(p -> {
                                                 p.sendMessage(Component.text(GetDown.instance().prefix() + "Die Shopping Phase beginnt in §f" + seconds.get() + " §7Sekunden!"));
                                                 p.playSound(p, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.0f);

@@ -22,10 +22,10 @@
         "Jan0schi"
       ],
       "materials": {
-        "GOLD_BLOCK": 10,
-        "DIAMOND_BLOCK": 5,
-        "IRON_BLOCK": 6,
-        "LAPIS_BLOCK": 6
+        "GOLD_BLOCK": 7,
+        "DIAMOND_BLOCK": 3,
+        "IRON_BLOCK": 5,
+        "LAPIS_BLOCK": 5
       },
       "loc1": {
         "x": -2,
