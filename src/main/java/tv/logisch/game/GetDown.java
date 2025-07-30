@@ -1,5 +1,7 @@
 package tv.logisch.game;
 
+import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.bukkit.Bukkit;
@@ -74,11 +76,13 @@ public final class GetDown extends JavaPlugin {
         pm.registerEvents(new EntityRegainHealthListener(), this);
 
         /* COMMAND REGISTRATION */
-        getCommand("start").setExecutor(new Start());
-        getCommand("coins").setExecutor(new Coins());
-        getCommand("skip").setExecutor(new Skip());
-        getCommand("settings").setExecutor(new Settings());
-        getCommand("worlds").setExecutor(new Worlds());
+        this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, (event) -> {
+            Commands registrar = event.registrar();
+
+            registrar.register("event", new EventCommand());
+            registrar.register("coins", new CoinsCommand());
+            registrar.register("skip", new SkipCommand());
+        });
 
         GameManager.get().waitingWorld(Bukkit.createWorld(new WorldCreator("waiting")));
         GameManager.get().pvpWorld(Bukkit.createWorld(new WorldCreator("pvp")));
