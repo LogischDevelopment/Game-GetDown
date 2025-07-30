@@ -8,6 +8,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
+import tv.logisch.game.enums.GameState;
+import tv.logisch.game.manager.GameManager;
 
 public class EntityShootBowListener implements Listener {
 
@@ -15,7 +17,9 @@ public class EntityShootBowListener implements Listener {
     public void onEntityShootBow(EntityShootBowEvent e) {
         if(!(e.getEntity() instanceof Player p)) return;
         if(e.getBow() == null) return;
-        p.getInventory().remove(e.getBow());
+        if(GameManager.get().state().equals(GameState.RUNNING)) {
+            p.getInventory().remove(e.getBow());
+        }
 
         if(!(e.getProjectile() instanceof Arrow arrow)) return;
 
