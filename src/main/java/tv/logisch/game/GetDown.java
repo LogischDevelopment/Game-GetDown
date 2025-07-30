@@ -78,13 +78,11 @@ public final class GetDown extends JavaPlugin {
         /* COMMAND REGISTRATION */
         this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, (event) -> {
             Commands registrar = event.registrar();
-        });
 
-        getCommand("start").setExecutor(new Start());
-        getCommand("coins").setExecutor(new Coins());
-        getCommand("skip").setExecutor(new Skip());
-        getCommand("settings").setExecutor(new Settings());
-        getCommand("worlds").setExecutor(new Worlds());
+            registrar.register("event", new EventCommand());
+            registrar.register("coins", new CoinsCommand());
+            registrar.register("skip", new SkipCommand());
+        });
 
         GameManager.get().waitingWorld(Bukkit.createWorld(new WorldCreator("waiting")));
         GameManager.get().pvpWorld(Bukkit.createWorld(new WorldCreator("pvp")));
