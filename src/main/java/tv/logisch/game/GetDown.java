@@ -1,5 +1,7 @@
 package tv.logisch.game;
 
+import io.papermc.paper.command.brigadier.Commands;
+import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import org.bukkit.Bukkit;
@@ -74,6 +76,10 @@ public final class GetDown extends JavaPlugin {
         pm.registerEvents(new EntityRegainHealthListener(), this);
 
         /* COMMAND REGISTRATION */
+        this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, (event) -> {
+            Commands registrar = event.registrar();
+        });
+
         getCommand("start").setExecutor(new Start());
         getCommand("coins").setExecutor(new Coins());
         getCommand("skip").setExecutor(new Skip());
