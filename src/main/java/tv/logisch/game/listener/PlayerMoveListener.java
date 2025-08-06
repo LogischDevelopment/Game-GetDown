@@ -19,7 +19,9 @@ import tv.logisch.game.objects.EffectSetting;
 import tv.logisch.game.objects.GameEffect;
 import tv.logisch.game.objects.ItemSetting;
 import tv.logisch.game.scoreboard.Scoreboard;
+import tv.logisch.game.worlds.ColorObject;
 
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class PlayerMoveListener implements Listener {
@@ -126,7 +128,9 @@ public class PlayerMoveListener implements Listener {
                     GameManager.get().playerCoinManager().addCoins(e.getPlayer(), coins);
                     e.getPlayer().playSound(e.getPlayer(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1.0f, 1.0f);
                     e.getPlayer().sendTitlePart(TitlePart.TITLE, Component.text("§6+" + coins));
-                    block.setType(Material.YELLOW_CONCRETE);
+                    ColorObject colorObject = GameManager.get().worldManager().colors().stream().skip((int) (Math.random() * GameManager.get().worldManager().colors().size())).findFirst().orElse(null);
+                    Material material = colorObject == null ? Material.YELLOW_CONCRETE : colorObject.materials().stream().skip((int) (Math.random() * colorObject.materials().size())).findFirst().orElse(Material.YELLOW_CONCRETE);
+                    block.setType(material);
                 }, 1);
             } else if(block.getType().equals(Material.DIAMOND_BLOCK)) {
                 Bukkit.getScheduler().runTaskLater(GetDown.instance(), () -> {
@@ -137,7 +141,9 @@ public class PlayerMoveListener implements Listener {
                     GameManager.get().playerCoinManager().addCoins(e.getPlayer(), coins);
                     e.getPlayer().sendTitlePart(TitlePart.TITLE, Component.text("§6+" + coins));
                     e.getPlayer().playSound(e.getPlayer(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1.0f, 1.0f);
-                    block.setType(Material.LIGHT_BLUE_CONCRETE);
+                    ColorObject colorObject = GameManager.get().worldManager().colors().stream().skip((int) (Math.random() * GameManager.get().worldManager().colors().size())).findFirst().orElse(null);
+                    Material material = colorObject == null ? Material.YELLOW_CONCRETE : colorObject.materials().stream().skip((int) (Math.random() * colorObject.materials().size())).findFirst().orElse(Material.YELLOW_CONCRETE);
+                    block.setType(material);
                 }, 1L);
             } else if(block.getType().equals(Material.IRON_BLOCK)) {
                 Bukkit.getScheduler().runTaskLater(GetDown.instance(), () -> {
@@ -148,7 +154,9 @@ public class PlayerMoveListener implements Listener {
                         e.getPlayer().playSound(e.getPlayer(), Sound.BLOCK_NOTE_BLOCK_GUITAR, 1.0f, 1.0f);
                         e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§aDu hast ein Item erhalten: §f" + randomItem.getType().name()));
                     }
-                    block.setType(Material.GRAY_CONCRETE);
+                    ColorObject colorObject = GameManager.get().worldManager().colors().stream().skip((int) (Math.random() * GameManager.get().worldManager().colors().size())).findFirst().orElse(null);
+                    Material material = colorObject == null ? Material.YELLOW_CONCRETE : colorObject.materials().stream().skip((int) (Math.random() * colorObject.materials().size())).findFirst().orElse(Material.YELLOW_CONCRETE);
+                    block.setType(material);
                 }, 1L);
             } else if(block.getType().equals(Material.OBSIDIAN)) {
                 Bukkit.getScheduler().runTaskLater(GetDown.instance(), () -> {
@@ -175,7 +183,9 @@ public class PlayerMoveListener implements Listener {
                         e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§aDu hast einen Effekt erhalten: §f" + effect.type().translationKey() + " §7(" + effect.duration() + " Sekunden, Stufe " + (effect.amplifier() + 1) + ")"));
                         e.getPlayer().playSound(e.getPlayer(), Sound.BLOCK_NOTE_BLOCK_GUITAR, 1.0f, 1.0f);
                     }
-                    block.setType(Material.CYAN_CONCRETE);
+                    ColorObject colorObject = GameManager.get().worldManager().colors().stream().skip((int) (Math.random() * GameManager.get().worldManager().colors().size())).findFirst().orElse(null);
+                    Material material = colorObject == null ? Material.YELLOW_CONCRETE : colorObject.materials().stream().skip((int) (Math.random() * colorObject.materials().size())).findFirst().orElse(Material.YELLOW_CONCRETE);
+                    block.setType(material);
                 }, 1L);
             }
 
