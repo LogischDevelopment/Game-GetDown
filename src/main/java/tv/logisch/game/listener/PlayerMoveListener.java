@@ -74,52 +74,6 @@ public class PlayerMoveListener implements Listener {
             }
 
             Block block = e.getPlayer().getLocation().getBlock().getRelative(0, -1, 0);
-            Block block2 = e.getPlayer().getLocation().getBlock().getRelative(0, -2, 0);
-            Block block3 = e.getPlayer().getLocation().getBlock().getRelative(0, -3, 0);
-
-            if(block2.getType().equals(Material.OBSIDIAN)) {
-                Bukkit.getScheduler().runTaskLater(GetDown.instance(), () -> {
-                    if (!e.getPlayer().getLocation().getBlock().getRelative(0, -2, 0).equals(block2)) return;
-                    if (Math.random() * 100 < GameManager.get().percentage()) {
-                        block2.setType(Material.SLIME_BLOCK);
-                        e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§aDu bist auf einen Slime Block gefallen!"));
-                        Bukkit.getScheduler().runTaskLater(GetDown.instance(), () -> {
-                            if (block2.getType().equals(Material.SLIME_BLOCK)) {
-                                ColorObject colorObject = WorldManager.color;
-                                Material material = colorObject == null ? Material.YELLOW_CONCRETE : colorObject.materials().stream().skip((int) (Math.random() * colorObject.materials().size())).findFirst().orElse(Material.YELLOW_CONCRETE);
-                                block2.setType(material);
-                            }
-                        }, 5 * 20L);
-                    } else {
-                        ColorObject colorObject = WorldManager.color;
-                        Material material = colorObject == null ? Material.YELLOW_CONCRETE : colorObject.materials().stream().skip((int) (Math.random() * colorObject.materials().size())).findFirst().orElse(Material.YELLOW_CONCRETE);
-                        block2.setType(material);
-                        e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§cDu bist auf einen normalen Block gefallen!"));
-                    }
-                }, 1L);
-            }
-            if(block3.getType().equals(Material.OBSIDIAN)) {
-                Bukkit.getScheduler().runTaskLater(GetDown.instance(), () -> {
-                    if (!e.getPlayer().getLocation().getBlock().getRelative(0, -2, 0).equals(block3)) return;
-                    if (Math.random() * 100 < GameManager.get().percentage()) {
-                        block3.setType(Material.SLIME_BLOCK);
-                        e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§aDu bist auf einen Slime Block gefallen!"));
-                        Bukkit.getScheduler().runTaskLater(GetDown.instance(), () -> {
-                            if (block3.getType().equals(Material.SLIME_BLOCK)) {
-                                ColorObject colorObject = WorldManager.color;
-                                Material material = colorObject == null ? Material.YELLOW_CONCRETE : colorObject.materials().stream().skip((int) (Math.random() * colorObject.materials().size())).findFirst().orElse(Material.YELLOW_CONCRETE);
-                                block3.setType(material);
-                            }
-                        }, 5 * 20L);
-                    } else {
-                        ColorObject colorObject = WorldManager.color;
-                        Material material = colorObject == null ? Material.YELLOW_CONCRETE : colorObject.materials().stream().skip((int) (Math.random() * colorObject.materials().size())).findFirst().orElse(Material.YELLOW_CONCRETE);
-                        block3.setType(material);
-                        e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§cDu bist auf einen normalen Block gefallen!"));
-                    }
-                }, 1L);
-            }
-
             if(block.getType().equals(Material.GOLD_BLOCK)) {
                 Bukkit.getScheduler().runTaskLater(GetDown.instance(), () -> {
                     if (!e.getPlayer().getLocation().getBlock().getRelative(0, -1, 0).equals(block)) return;

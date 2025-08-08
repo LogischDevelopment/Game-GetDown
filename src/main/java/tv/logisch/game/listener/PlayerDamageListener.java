@@ -56,30 +56,29 @@ public class PlayerDamageListener implements Listener {
             if(e.getCause() == EntityDamageEvent.DamageCause.FALL) {
                 double newDamage = e.getDamage() * 1.25;
                 Block block = p.getLocation().getBlock().getRelative(0, -1, 0);
-                if(newDamage >= p.getHealth()) {
-                    if (block.getType().equals(Material.OBSIDIAN)) {
-                        if (p.getLocation().getBlock().getRelative(0, -1, 0).equals(block)) {
-                            if (Math.random() * 100 < GameManager.get().percentage()) {
-                                block.setType(Material.SLIME_BLOCK);
-                                p.sendMessage(Component.text(GetDown.instance().prefix() + "§aDu bist auf einen Slime Block gefallen!"));
-                                Bukkit.getScheduler().runTaskLater(GetDown.instance(), () -> {
-                                    if (block.getType().equals(Material.SLIME_BLOCK)) {
-                                        ColorObject colorObject = WorldManager.color;
-                                        Material material = colorObject == null ? Material.YELLOW_CONCRETE : colorObject.materials().stream().skip((int) (Math.random() * colorObject.materials().size())).findFirst().orElse(Material.YELLOW_CONCRETE);
-                                        block.setType(material);
-                                    }
-                                }, 5 * 20L);
-                                e.setCancelled(true);
-                                return;
-                            } else {
-                                ColorObject colorObject = WorldManager.color;
-                                Material material = colorObject == null ? Material.YELLOW_CONCRETE : colorObject.materials().stream().skip((int) (Math.random() * colorObject.materials().size())).findFirst().orElse(Material.YELLOW_CONCRETE);
-                                block.setType(material);
-                                p.sendMessage(Component.text(GetDown.instance().prefix() + "§cDu bist auf einen normalen Block gefallen!"));
-                            }
+                if (block.getType().equals(Material.OBSIDIAN)) {
+                    if (p.getLocation().getBlock().getRelative(0, -1, 0).equals(block)) {
+                        if (Math.random() * 100 < GameManager.get().percentage()) {
+                            block.setType(Material.HAY_BLOCK);
+                            p.sendMessage(Component.text(GetDown.instance().prefix() + "§aDu bist auf einen Slime Block gefallen!"));
+                            Bukkit.getScheduler().runTaskLater(GetDown.instance(), () -> {
+                                if (block.getType().equals(Material.HAY_BLOCK)) {
+                                    ColorObject colorObject = WorldManager.color;
+                                    Material material = colorObject == null ? Material.YELLOW_CONCRETE : colorObject.materials().stream().skip((int) (Math.random() * colorObject.materials().size())).findFirst().orElse(Material.YELLOW_CONCRETE);
+                                    block.setType(material);
+                                }
+                            }, 5 * 20L);
+                            e.setCancelled(true);
+                            return;
+                        } else {
+                            ColorObject colorObject = WorldManager.color;
+                            Material material = colorObject == null ? Material.YELLOW_CONCRETE : colorObject.materials().stream().skip((int) (Math.random() * colorObject.materials().size())).findFirst().orElse(Material.YELLOW_CONCRETE);
+                            block.setType(material);
+                            p.sendMessage(Component.text(GetDown.instance().prefix() + "§cDu bist auf einen normalen Block gefallen!"));
                         }
                     }
-
+                }
+                if(newDamage >= p.getHealth()) {
                     e.setCancelled(true);
                     p.setHealth(20.0);
                     p.getInventory().clear();
