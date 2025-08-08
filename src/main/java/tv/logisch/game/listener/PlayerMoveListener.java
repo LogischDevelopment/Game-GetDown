@@ -119,10 +119,10 @@ public class PlayerMoveListener implements Listener {
                 Bukkit.getScheduler().runTaskLater(GetDown.instance(), () -> {
                     if (!e.getPlayer().getLocation().getBlock().getRelative(0, -1, 0).equals(block)) return;
                     if (Math.random() * 100 < GameManager.get().percentage()) {
-                        block.setType(Material.SLIME_BLOCK);
-                        e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§aDu bist auf einen Slime Block gefallen!"));
+                        block.setType(Material.HAY_BLOCK);
+                        e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§aDu bist sanft gelandet!"));
                         Bukkit.getScheduler().runTaskLater(GetDown.instance(), () -> {
-                            if (block.getType().equals(Material.SLIME_BLOCK)) {
+                            if (block.getType().equals(Material.HAY_BLOCK)) {
                                 ColorObject colorObject = WorldManager.color;
                                 Material material = colorObject == null ? Material.YELLOW_CONCRETE : colorObject.materials().stream().skip((int) (Math.random() * colorObject.materials().size())).findFirst().orElse(Material.YELLOW_CONCRETE);
                                 block.setType(material);

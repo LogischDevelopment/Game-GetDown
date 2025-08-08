@@ -60,7 +60,7 @@ public class PlayerDamageListener implements Listener {
                     if (p.getLocation().getBlock().getRelative(0, -1, 0).equals(block)) {
                         if (Math.random() * 100 < GameManager.get().percentage()) {
                             block.setType(Material.HAY_BLOCK);
-                            p.sendMessage(Component.text(GetDown.instance().prefix() + "§aDu bist auf einen Slime Block gefallen!"));
+                            p.sendMessage(Component.text(GetDown.instance().prefix() + "§aDu bist sanft gelandet!"));
                             Bukkit.getScheduler().runTaskLater(GetDown.instance(), () -> {
                                 if (block.getType().equals(Material.HAY_BLOCK)) {
                                     ColorObject colorObject = WorldManager.color;
