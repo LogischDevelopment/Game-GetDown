@@ -2,7 +2,6 @@ package tv.logisch.game.listener;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.TitlePart;
-import org.apache.commons.lang3.text.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -12,7 +11,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.scheduler.BukkitTask;
 import tv.logisch.game.GetDown;
 import tv.logisch.game.enums.GameState;
 import tv.logisch.game.manager.GameManager;
@@ -21,9 +19,7 @@ import tv.logisch.game.objects.GameEffect;
 import tv.logisch.game.objects.ItemSetting;
 import tv.logisch.game.scoreboard.Scoreboard;
 import tv.logisch.game.worlds.ColorObject;
-
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
+import tv.logisch.game.worlds.WorldManager;
 
 public class PlayerMoveListener implements Listener {
 
@@ -71,10 +67,6 @@ public class PlayerMoveListener implements Listener {
                                 p.sendMessage(Component.text(GetDown.instance().prefix() + "§f"+e.getPlayer().getName()+" §7ist unten angekommen! ("+finishedCount+"/3)"));
                                 p.playSound(p, Sound.ENTITY_ENDER_DRAGON_AMBIENT, 1.0f, 1.0f);
                             });
-
-                            if(finishedCount >= 3 || finishedCount == Bukkit.getOnlinePlayers().size()) {
-                                GameManager.get().stopDroppingPhaseCooldown();
-                            }
                         }
                     }
                 }, 2L);
@@ -129,7 +121,7 @@ public class PlayerMoveListener implements Listener {
                     GameManager.get().playerCoinManager().addCoins(e.getPlayer(), coins);
                     e.getPlayer().playSound(e.getPlayer(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1.0f, 1.0f);
                     e.getPlayer().sendTitlePart(TitlePart.TITLE, Component.text("§6+" + coins));
-                    ColorObject colorObject = GameManager.get().worldManager().colors().stream().skip((int) (Math.random() * GameManager.get().worldManager().colors().size())).findFirst().orElse(null);
+                    ColorObject colorObject = WorldManager.color;
                     Material material = colorObject == null ? Material.YELLOW_CONCRETE : colorObject.materials().stream().skip((int) (Math.random() * colorObject.materials().size())).findFirst().orElse(Material.YELLOW_CONCRETE);
                     block.setType(material);
                 }, 1);
@@ -142,7 +134,7 @@ public class PlayerMoveListener implements Listener {
                     GameManager.get().playerCoinManager().addCoins(e.getPlayer(), coins);
                     e.getPlayer().sendTitlePart(TitlePart.TITLE, Component.text("§6+" + coins));
                     e.getPlayer().playSound(e.getPlayer(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1.0f, 1.0f);
-                    ColorObject colorObject = GameManager.get().worldManager().colors().stream().skip((int) (Math.random() * GameManager.get().worldManager().colors().size())).findFirst().orElse(null);
+                    ColorObject colorObject = WorldManager.color;
                     Material material = colorObject == null ? Material.YELLOW_CONCRETE : colorObject.materials().stream().skip((int) (Math.random() * colorObject.materials().size())).findFirst().orElse(Material.YELLOW_CONCRETE);
                     block.setType(material);
                 }, 1L);
@@ -157,7 +149,7 @@ public class PlayerMoveListener implements Listener {
                         String formattedItemName = itemName.substring(0, 1).toUpperCase() + itemName.substring(1).toLowerCase();
                         e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§aDu hast ein Item erhalten: §f" + formattedItemName));
                     }
-                    ColorObject colorObject = GameManager.get().worldManager().colors().stream().skip((int) (Math.random() * GameManager.get().worldManager().colors().size())).findFirst().orElse(null);
+                    ColorObject colorObject = WorldManager.color;
                     Material material = colorObject == null ? Material.YELLOW_CONCRETE : colorObject.materials().stream().skip((int) (Math.random() * colorObject.materials().size())).findFirst().orElse(Material.YELLOW_CONCRETE);
                     block.setType(material);
                 }, 1L);
@@ -190,7 +182,7 @@ public class PlayerMoveListener implements Listener {
 
                         e.getPlayer().playSound(e.getPlayer(), Sound.BLOCK_NOTE_BLOCK_GUITAR, 1.0f, 1.0f);
                     }
-                    ColorObject colorObject = GameManager.get().worldManager().colors().stream().skip((int) (Math.random() * GameManager.get().worldManager().colors().size())).findFirst().orElse(null);
+                    ColorObject colorObject = WorldManager.color;
                     Material material = colorObject == null ? Material.YELLOW_CONCRETE : colorObject.materials().stream().skip((int) (Math.random() * colorObject.materials().size())).findFirst().orElse(Material.YELLOW_CONCRETE);
                     block.setType(material);
                 }, 1L);

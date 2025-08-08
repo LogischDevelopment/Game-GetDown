@@ -16,6 +16,8 @@ import java.util.stream.Collectors;
 @Accessors(fluent = true)
 public class WorldManager {
 
+    public static ColorObject color = null;
+
     private List<WorldObject> worlds;
     private List<ColorObject> colors;
 
@@ -160,6 +162,7 @@ public class WorldManager {
                             .orElseThrow(() -> new IllegalArgumentException("Color not found: " + colorName));
 
                     List<Location> placeholderLocations = new ArrayList<>();
+                    WorldManager.color = colorObject;
 
                     int x1 = worldObject.loc1().getBlockX();
                     int x2 = worldObject.loc2().getBlockX();

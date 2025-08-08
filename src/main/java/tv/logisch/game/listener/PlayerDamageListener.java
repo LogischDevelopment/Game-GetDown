@@ -3,6 +3,7 @@ package tv.logisch.game.listener;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.TitlePart;
 import org.bukkit.*;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -31,6 +32,11 @@ public class PlayerDamageListener implements Listener {
 
         if(state.equals(GameState.RUNNING)) {
             if(GameManager.get().playersFinished.contains(p)) {
+                e.setCancelled(true);
+                return;
+            }
+            Entity causingEntity = e.getDamageSource().getCausingEntity();
+            if(causingEntity instanceof Player damager && GameManager.get().playersFinished.contains(damager)) {
                 e.setCancelled(true);
                 return;
             }

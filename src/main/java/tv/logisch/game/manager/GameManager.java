@@ -88,16 +88,16 @@ public class GameManager {
                     p.setGameMode(GameMode.SURVIVAL);
                 });
                 Bukkit.getScheduler().runTaskAsynchronously(GetDown.instance(), () -> {
-                    int time = 15;
+                    int time = 10;
                     while (time > 0) {
                         int finalTime = time;
                         Bukkit.getOnlinePlayers().forEach(p -> {
-                            if(finalTime == 15 || finalTime == 10 || finalTime <= 5) {
+                            if(finalTime == 10 || finalTime <= 5) {
                                 p.sendMessage(GetDown.instance().prefix() + "Das Spiel startet in §f"+finalTime+" §7Sekunden!");
                                 p.playSound(p, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.0f);
                             }
                             p.setLevel(finalTime);
-                            p.setExp((float) finalTime / 15);
+                            p.setExp((float) finalTime / 10);
                         });
                         try {
                             Thread.sleep(1000);
