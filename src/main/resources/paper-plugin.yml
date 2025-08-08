@@ -5,3 +5,10 @@ api-version: '1.21'
 authors: [Teekqu, Fb1an]
 description: Plugin for Logisch.tv Network
 website: https://www.logisch.tv/
+
+dependencies:
+  server:
+    ProtocolLib:
+      load: BEFORE
+      required: true
+      join-classpath: true

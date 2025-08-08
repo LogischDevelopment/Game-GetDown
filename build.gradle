@@ -29,7 +29,6 @@ repositories {
         name = "buf"
         url = "https://buf.build/gen/maven"
     }
-    maven { url 'https://repo.dmulloy2.net/repository/public/' }
 }
 
 dependencies {

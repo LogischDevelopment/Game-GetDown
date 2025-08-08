@@ -16,16 +16,16 @@ import java.util.List;
 public class ItemSetting {
 
     public static final List<GameItem> items = List.of(
-            new GameItem(Material.CROSSBOW, "Crossbow", "", true),
-            new GameItem(Material.CROSSBOW, "Crossbow", "", true),
-            new GameItem(Material.CROSSBOW, "Crossbow", "", true),
-            new GameItem(Material.CROSSBOW, "Crossbow", "", true),
-            new GameItem(Material.CROSSBOW, "Crossbow", "", true),
-            new GameItem(Material.CROSSBOW, "Crossbow", "", true),
-            new GameItem(Material.CROSSBOW, "Crossbow", "", true),
-            new GameItem(Material.CROSSBOW, "Crossbow", "", true),
-            new GameItem(Material.CROSSBOW, "Crossbow", "", true),
-            new GameItem(Material.TRIDENT, "Trident", "", true)
+            new GameItem(Material.CROSSBOW, "Crossbow", "", true, 1),
+            new GameItem(Material.CROSSBOW, "Crossbow", "", true, 1),
+            new GameItem(Material.CROSSBOW, "Crossbow", "", true, 1),
+            new GameItem(Material.CROSSBOW, "Crossbow", "", true, 1),
+            new GameItem(Material.CROSSBOW, "Crossbow", "", true, 1),
+            new GameItem(Material.CROSSBOW, "Crossbow", "", true, 1),
+            new GameItem(Material.CROSSBOW, "Crossbow", "", true, 1),
+            new GameItem(Material.CROSSBOW, "Crossbow", "", true, 1),
+            new GameItem(Material.TRIDENT, "Trident", "", true, 1),
+            new GameItem(Material.BRICKS, "Bricks", "", true, 3)
     );
 
     public static List<GameItem> items() {
@@ -45,7 +45,7 @@ public class ItemSetting {
         while (!itemSetting.enabled()) {
             itemSetting = items.get((int) (Math.random() * items.size()));
         }
-        ItemStack stack = new ItemStack(itemSetting.material(), 1);
+        ItemStack stack = new ItemStack(itemSetting.material(), itemSetting.amount());
         GameItem finalItemSetting = itemSetting;
         stack.editMeta(meta -> {
             meta.displayName(Component.text(finalItemSetting.name()));
@@ -72,6 +72,7 @@ public class ItemSetting {
         private String name;
         private String description;
         private boolean enabled;
+        private int amount;
     }
 
 }

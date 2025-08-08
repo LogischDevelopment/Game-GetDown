@@ -1,5 +1,8 @@
 package tv.logisch.game.listener;
 
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
+import tv.logisch.game.utils.BlockBreakAnimator;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.TNTPrimed;
@@ -14,21 +17,10 @@ public class BlockPlaceListener implements Listener {
     public void onBlockPlace(BlockPlaceEvent e) {
         if(e.getPlayer().getGameMode().equals(GameMode.CREATIVE)) return;
         if (e.getBlockPlaced().getType().equals(Material.BRICKS)) {
-            // Bukkit.getScheduler().runTaskLater(GetDown.instance(), () -> {
-            //     e.getBlockPlaced().setType(Material.AIR);
-            // }, 7*20L);
-
             Block block = e.getBlock();
-            Location location = block.getLocation();
+            Player player = e.getPlayer();
 
-            Bukkit.getScheduler().runTaskLater(GetDown.instance(), () -> {
-                location.getWorld().spawnParticle(Particle.BLOCK_CRUMBLE, location.add(0.5, 0.5, 0.5), 20, block.getBlockData());
-
-                location.getWorld().playSound(location, Sound.BLOCK_STONE_BREAK, 1.0f, 1.0f);
-
-                block.setType(Material.AIR);
-            }, 7 * 20);
-
+            BlockBreakAnimator.animateBreak(GetDown.instance(), block);
             return;
         }
         if(e.getBlockPlaced().getType().equals(Material.TNT)) {

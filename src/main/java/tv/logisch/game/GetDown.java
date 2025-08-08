@@ -60,7 +60,7 @@ public final class GetDown extends JavaPlugin {
         pm.registerEvents(new JoinListener(), this);
         pm.registerEvents(new QuitListener(), this);
         pm.registerEvents(new BlockBreakListener(), this);
-        pm.registerEvents(new BlockPlaceListener(this), this);
+        pm.registerEvents(new BlockPlaceListener(), this);
         pm.registerEvents(new PlayerMoveListener(), this);
         pm.registerEvents(new PlayerLoginListener(), this);
         pm.registerEvents(new ShopGUIListener(), this);
