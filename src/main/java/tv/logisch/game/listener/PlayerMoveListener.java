@@ -2,6 +2,7 @@ package tv.logisch.game.listener;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.title.TitlePart;
+import org.apache.commons.lang3.text.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -152,7 +153,9 @@ public class PlayerMoveListener implements Listener {
                     if (randomItem != null) {
                         e.getPlayer().getInventory().addItem(randomItem);
                         e.getPlayer().playSound(e.getPlayer(), Sound.BLOCK_NOTE_BLOCK_GUITAR, 1.0f, 1.0f);
-                        e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§aDu hast ein Item erhalten: §f" + randomItem.getType().name()));
+                        String itemName = randomItem.getType().name();
+                        String formattedItemName = itemName.substring(0, 1).toUpperCase() + itemName.substring(1).toLowerCase();
+                        e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§aDu hast ein Item erhalten: §f" + formattedItemName));
                     }
                     ColorObject colorObject = GameManager.get().worldManager().colors().stream().skip((int) (Math.random() * GameManager.get().worldManager().colors().size())).findFirst().orElse(null);
                     Material material = colorObject == null ? Material.YELLOW_CONCRETE : colorObject.materials().stream().skip((int) (Math.random() * colorObject.materials().size())).findFirst().orElse(Material.YELLOW_CONCRETE);
@@ -180,7 +183,11 @@ public class PlayerMoveListener implements Listener {
                     GameEffect effect = EffectSetting.getRandomEffect();
                     if (effect != null) {
                         e.getPlayer().addPotionEffect(new PotionEffect(effect.type(), effect.duration() * 20, effect.amplifier()));
-                        e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§aDu hast einen Effekt erhalten: §f" + effect.type().translationKey() + " §7(" + effect.duration() + " Sekunden, Stufe " + (effect.amplifier() + 1) + ")"));
+
+                        String rawEffectName = effect.type().getKey().getKey();
+                        String formattedEffectName = rawEffectName.substring(0, 1).toUpperCase() + rawEffectName.substring(1);
+                        e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§aDu hast einen Effekt erhalten: §f" + formattedEffectName + " §7(" + effect.duration() + " Sekunden, Stufe " + (effect.amplifier() + 1) + ")"));
+
                         e.getPlayer().playSound(e.getPlayer(), Sound.BLOCK_NOTE_BLOCK_GUITAR, 1.0f, 1.0f);
                     }
                     ColorObject colorObject = GameManager.get().worldManager().colors().stream().skip((int) (Math.random() * GameManager.get().worldManager().colors().size())).findFirst().orElse(null);

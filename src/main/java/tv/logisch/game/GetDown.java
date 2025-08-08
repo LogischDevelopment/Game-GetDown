@@ -60,7 +60,7 @@ public final class GetDown extends JavaPlugin {
         pm.registerEvents(new JoinListener(), this);
         pm.registerEvents(new QuitListener(), this);
         pm.registerEvents(new BlockBreakListener(), this);
-        pm.registerEvents(new BlockPlaceListener(), this);
+        pm.registerEvents(new BlockPlaceListener(this), this);
         pm.registerEvents(new PlayerMoveListener(), this);
         pm.registerEvents(new PlayerLoginListener(), this);
         pm.registerEvents(new ShopGUIListener(), this);
@@ -75,6 +75,7 @@ public final class GetDown extends JavaPlugin {
         pm.registerEvents(new SettingGUIListener(), this);
         pm.registerEvents(new WorldGUIListener(), this);
         pm.registerEvents(new EntityRegainHealthListener(), this);
+        pm.registerEvents(new ProjectileLaunchListener(), this);
 
         /* COMMAND REGISTRATION */
         this.getLifecycleManager().registerEventHandler(LifecycleEvents.COMMANDS, (event) -> {
@@ -95,6 +96,8 @@ public final class GetDown extends JavaPlugin {
             w.setGameRule(GameRule.DO_MOB_SPAWNING, false);
         });
 
+        // BlockBreakAnimation
+        getServer().getPluginManager().registerEvents(new BlockBreakListener(), this);
     }
 
     @Override
