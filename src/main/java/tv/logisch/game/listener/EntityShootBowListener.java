@@ -1,5 +1,6 @@
 package tv.logisch.game.listener;
 
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
@@ -19,6 +20,9 @@ public class EntityShootBowListener implements Listener {
         if(e.getBow() == null) return;
         if(GameManager.get().state().equals(GameState.RUNNING)) {
             p.getInventory().remove(e.getBow());
+        }
+        if(GameManager.get().state().equals(GameState.SHOPPING)) {
+            e.setCancelled(true);
         }
 
         if(!(e.getProjectile() instanceof Arrow arrow)) return;
