@@ -54,7 +54,7 @@ public class PlayerMoveListener implements Listener {
                             GameManager.get().playersFinished.add(e.getPlayer());
                             Scoreboard.scoreboards.forEach(Scoreboard::update);
                             int finishedCount = GameManager.get().playersFinished.size();
-                            if(finishedCount == 1) {
+                            if(finishedCount == 1 && Bukkit.getOnlinePlayers().size() != 1) {
                                 GameManager.get().playerCoinManager().addCoins(e.getPlayer(), 300);
                                 e.getPlayer().sendTitlePart(TitlePart.TITLE, Component.text("§6+300"));
                                 GameManager.get().startDroppingPhaseCooldown();
