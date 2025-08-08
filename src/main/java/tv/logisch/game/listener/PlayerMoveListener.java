@@ -85,11 +85,15 @@ public class PlayerMoveListener implements Listener {
                         e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§aDu bist auf einen Slime Block gefallen!"));
                         Bukkit.getScheduler().runTaskLater(GetDown.instance(), () -> {
                             if (block2.getType().equals(Material.SLIME_BLOCK)) {
-                                block2.setType(Material.COBBLESTONE);
+                                ColorObject colorObject = WorldManager.color;
+                                Material material = colorObject == null ? Material.YELLOW_CONCRETE : colorObject.materials().stream().skip((int) (Math.random() * colorObject.materials().size())).findFirst().orElse(Material.YELLOW_CONCRETE);
+                                block2.setType(material);
                             }
                         }, 5 * 20L);
                     } else {
-                        block2.setType(Material.COBBLESTONE);
+                        ColorObject colorObject = WorldManager.color;
+                        Material material = colorObject == null ? Material.YELLOW_CONCRETE : colorObject.materials().stream().skip((int) (Math.random() * colorObject.materials().size())).findFirst().orElse(Material.YELLOW_CONCRETE);
+                        block2.setType(material);
                         e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§cDu bist auf einen normalen Block gefallen!"));
                     }
                 }, 1L);
@@ -102,11 +106,15 @@ public class PlayerMoveListener implements Listener {
                         e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§aDu bist auf einen Slime Block gefallen!"));
                         Bukkit.getScheduler().runTaskLater(GetDown.instance(), () -> {
                             if (block3.getType().equals(Material.SLIME_BLOCK)) {
-                                block3.setType(Material.COBBLESTONE);
+                                ColorObject colorObject = WorldManager.color;
+                                Material material = colorObject == null ? Material.YELLOW_CONCRETE : colorObject.materials().stream().skip((int) (Math.random() * colorObject.materials().size())).findFirst().orElse(Material.YELLOW_CONCRETE);
+                                block3.setType(material);
                             }
                         }, 5 * 20L);
                     } else {
-                        block3.setType(Material.COBBLESTONE);
+                        ColorObject colorObject = WorldManager.color;
+                        Material material = colorObject == null ? Material.YELLOW_CONCRETE : colorObject.materials().stream().skip((int) (Math.random() * colorObject.materials().size())).findFirst().orElse(Material.YELLOW_CONCRETE);
+                        block3.setType(material);
                         e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§cDu bist auf einen normalen Block gefallen!"));
                     }
                 }, 1L);
@@ -161,11 +169,15 @@ public class PlayerMoveListener implements Listener {
                         e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§aDu bist auf einen Slime Block gefallen!"));
                         Bukkit.getScheduler().runTaskLater(GetDown.instance(), () -> {
                             if (block.getType().equals(Material.SLIME_BLOCK)) {
-                                block.setType(Material.COBBLESTONE);
+                                ColorObject colorObject = WorldManager.color;
+                                Material material = colorObject == null ? Material.YELLOW_CONCRETE : colorObject.materials().stream().skip((int) (Math.random() * colorObject.materials().size())).findFirst().orElse(Material.YELLOW_CONCRETE);
+                                block.setType(material);
                             }
                         }, 5 * 20L);
                     } else {
-                        block.setType(Material.COBBLESTONE);
+                        ColorObject colorObject = WorldManager.color;
+                        Material material = colorObject == null ? Material.YELLOW_CONCRETE : colorObject.materials().stream().skip((int) (Math.random() * colorObject.materials().size())).findFirst().orElse(Material.YELLOW_CONCRETE);
+                        block.setType(material);
                         e.getPlayer().sendMessage(Component.text(GetDown.instance().prefix() + "§cDu bist auf einen normalen Block gefallen!"));
                     }
                 }, 1L);

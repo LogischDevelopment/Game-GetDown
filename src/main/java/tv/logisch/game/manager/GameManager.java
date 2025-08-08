@@ -9,6 +9,8 @@ import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import tv.logisch.game.GetDown;
 import tv.logisch.game.enums.GameState;
 import tv.logisch.game.scoreboard.Scoreboard;
@@ -112,6 +114,7 @@ public class GameManager {
                         p.playSound(p, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
                         p.setLevel(0);
                         p.setExp(0);
+                        p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 1, false, false));
                     });
                     Scoreboard.scoreboards.forEach(Scoreboard::start);
                     this.startScoreboardUpdater();
