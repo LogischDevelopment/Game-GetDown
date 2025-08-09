@@ -88,6 +88,7 @@ public class GameManager {
                     p.teleport(world.spawnPoint());
                     p.getInventory().clear();
                     p.setGameMode(GameMode.SURVIVAL);
+                    p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 1, false, false));
                 });
                 Bukkit.getScheduler().runTaskAsynchronously(GetDown.instance(), () -> {
                     int time = 10;
@@ -114,7 +115,6 @@ public class GameManager {
                         p.playSound(p, Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
                         p.setLevel(0);
                         p.setExp(0);
-                        p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 1, false, false));
                     });
                     Scoreboard.scoreboards.forEach(Scoreboard::start);
                     this.startScoreboardUpdater();
@@ -272,11 +272,11 @@ public class GameManager {
             p.playSound(p, Sound.ENTITY_ENDER_DRAGON_GROWL, 1.0f, 1.0f);
         });
         Bukkit.getScheduler().runTaskAsynchronously(GetDown.instance(), () -> {
-            int seconds = 15;
+            int seconds = 10;
             while (seconds > 0) {
                 int finalSeconds = seconds;
                 Bukkit.getOnlinePlayers().forEach(p -> {
-                    if(finalSeconds == 15 || finalSeconds == 10 || finalSeconds <= 5) {
+                    if(finalSeconds == 10 || finalSeconds <= 5) {
                         p.sendMessage(GetDown.instance().prefix() + "Der Server stoppt in §f" + finalSeconds + " §7Sekunden!");
                         p.playSound(p, Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.0f);
                     }
