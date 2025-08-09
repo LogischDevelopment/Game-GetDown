@@ -19,11 +19,6 @@ public class ItemSetting {
             new GameItem(Material.CROSSBOW, "Crossbow", "", true, 1),
             new GameItem(Material.CROSSBOW, "Crossbow", "", true, 1),
             new GameItem(Material.CROSSBOW, "Crossbow", "", true, 1),
-            new GameItem(Material.CROSSBOW, "Crossbow", "", true, 1),
-            new GameItem(Material.CROSSBOW, "Crossbow", "", true, 1),
-            new GameItem(Material.CROSSBOW, "Crossbow", "", true, 1),
-            new GameItem(Material.CROSSBOW, "Crossbow", "", true, 1),
-            new GameItem(Material.CROSSBOW, "Crossbow", "", true, 1),
             new GameItem(Material.TRIDENT, "Trident", "", true, 1),
             new GameItem(Material.BRICKS, "Bricks", "", true, 3)
     );
