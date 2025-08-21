@@ -15,7 +15,8 @@ public class GameConfig {
     private String hostName;
 
     public GameConfig initialize() {
-        ServerProperty[] properties = GetDown.instance().logiAPI().minecraftCloud().getServerProperties(System.getenv("SIMPLECLOUD_GROUP"), Integer.parseInt(System.getenv("SIMPLECLOUD_NUMERICAL_ID")));
+        String service = System.getenv("service-name");
+        ServerProperty[] properties = GetDown.instance().logiAPI().minecraftCloud().getServerProperties(service.split("-")[0], Integer.parseInt(service.split("-")[1]));
         for (ServerProperty property : properties) {
             if (property.getName().equals("host")) {
                 this.hostUUID = UUID.fromString(property.getValue());
