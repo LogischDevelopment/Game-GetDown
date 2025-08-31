@@ -21,14 +21,6 @@ repositories {
         name = "devload"
         url = "https://repo.devload.eu/releases"
     }
-    maven {
-        name = "simplecloud"
-        url = "https://repo.simplecloud.app/snapshots"
-    }
-    maven {
-        name = "buf"
-        url = "https://buf.build/gen/maven"
-    }
 }
 
 dependencies {
@@ -40,7 +32,7 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.34")
 
     // Logisch API
-    implementation("tv.logisch:LogiAPIClient:1.6.4")
+    implementation("tv.logisch:LogiAPIClient:1.7.1")
 
     // ProtocolLib
     compileOnly("net.dmulloy2:ProtocolLib:5.4.0")
